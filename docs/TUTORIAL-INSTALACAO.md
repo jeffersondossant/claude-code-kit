@@ -118,7 +118,7 @@ code --install-extension ms-ceintl.vscode-language-pack-pt-br
 | Programa | baixado pelo `npx` (`omniroute@<versão>`) para o cache do npm; sem instalação global | `npx` |
 | Versão | `VersaoOmniRoute` no `config.local.psd1` | você |
 | Dados (banco + `.env` com a chave de criptografia) | `PastaDadosOmni`, com acesso restrito; variável de usuário `DATA_DIR` | `omniroute\scripts\instalar.ps1` |
-| Início automático | tarefa agendada `OmniRoute` (no logon, sem janela) | `omniroute\scripts\instalar.ps1` |
+| Início automático | tarefa agendada `OmniRoute`, em **segundo plano** (sem janela; não cai ao bloquear a tela ou fechar terminais) | `omniroute\scripts\instalar.ps1` |
 | Painel | http://localhost:20128 | você |
 | Backup cifrado | `PastaBackups\omniroute-backup.enc` | `omniroute\scripts\backup.ps1` |
 
@@ -126,7 +126,7 @@ O `omniroute\scripts\instalar.ps1` faz, em ordem:
 1. confere o Node.js e se já há banco; se não houver, pede confirmação;
 2. **protege a pasta**: acesso só para você, SYSTEM e Administradores;
 3. grava a variável **`DATA_DIR`**;
-4. cria a tarefa **`OmniRoute`**: `npx -y omniroute@<versão>`, no logon, reiniciando até 3 vezes se falhar;
+4. cria a tarefa **`OmniRoute`** (`npx -y omniroute@<versão>`) **em segundo plano** (modo S4U: seu usuário, sem guardar senha, sem janela), que liga **com o Windows**, no logon e tem um **vigia a cada 5 minutos** que a religa se ela parar;
 5. inicia a tarefa e espera a porta 20128 responder, por até 60 s.
 
 Na primeira vez o `npx` baixa o programa: isso leva de 2 a 3 minutos e mostra vários `npm warn`, que são normais.
@@ -305,7 +305,7 @@ powershell -ExecutionPolicy Bypass -File .\omniroute\scripts\backup.ps1
 | Item | Como conferir | Esperado |
 |---|---|---|
 | OmniRoute no ar | `Invoke-WebRequest http://localhost:20128 -UseBasicParsing` | 200 |
-| Inicia com o Windows | `Get-ScheduledTask -TaskName OmniRoute` | `Ready` |
+| Inicia com o Windows (segundo plano) | `(Get-ScheduledTask -TaskName OmniRoute).Principal.LogonType` | `S4U` |
 | Pasta de dados | `[Environment]::GetEnvironmentVariable('DATA_DIR','User')` | sua `PastaDadosOmni` |
 | Modelo do Claude Code | chat do VS Code | `claude-pro-fallback` |
 | Histórico | `(Get-Content "$env:USERPROFILE\.claude\settings.json" -Raw \| ConvertFrom-Json).cleanupPeriodDays` | `36500` |
@@ -321,6 +321,7 @@ powershell -ExecutionPolicy Bypass -File .\omniroute\scripts\backup.ps1
 |---|---|---|
 | OmniRoute "zerado", sem provedores | Surgiu `%USERPROFILE%\.omniroute`, que ele prefere quando o `DATA_DIR` não está definido | Confira o `DATA_DIR` (etapa 3) e reinicie o OmniRoute |
 | "STORAGE_ENCRYPTION_KEY is not set" | OmniRoute lendo uma pasta sem o `.env` | Mesmo caso acima |
+| OmniRoute cai ao fechar um terminal ou bloquear a tela (código `0xC000013A`) | Tarefa antiga, "no logon": o Windows 11 prendia o processo a uma janela de terminal | Rode o `omniroute\scripts\instalar.ps1` 🛡️ como Administrador: a tarefa passa a rodar em segundo plano (S4U) com vigia de 5 min |
 | `Register-ScheduledTask: Acesso negado` | A tarefa foi criada antes como Administrador | Rode o instalador 🛡️ como Administrador |
 | "a execução de scripts foi desabilitada" | Política de execução do Windows | `powershell -ExecutionPolicy Bypass -File ...` |
 | Chat para quando acaba o limite do Claude | Modelo da lista (`cc/...`) escolhido | `/model claude-pro-fallback` |

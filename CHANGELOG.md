@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 — 2026-11-21
+- **A tarefa `OmniRoute` roda em segundo plano** (S4U, sem janela), liga com o Windows e no logon, e tem um **vigia a cada 5 minutos**. Antes, rodando "no logon", o Windows 11 podia prender o PowerShell oculto a uma janela de terminal, e fechar essa janela ou bloquear a tela derrubava o servidor (`0xC000013A`).
+- Tutorial atualizado (tarefa, conferência e problemas comuns).
+
 ## 0.1.0 — 2026-11-21
 Primeira versão pública. Derivada do repositório pessoal `claude-code-setup` (0.5.0), sem nenhum dado pessoal e sem o histórico dele.
 
