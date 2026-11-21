@@ -1,0 +1,39 @@
+# claude-code-kit: nada pessoal entra no Git
+
+# Sua configuração (copie config.exemplo.psd1 para config.local.psd1)
+config.local.*
+*.local.*
+
+# Segredos e dados do OmniRoute: NUNCA neste repositório público
+.env
+.env.*
+!.env.example
+secrets.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite-*
+*.db
+*.enc
+backups/
+dados/
+.backup-tmp/
+*.zip
+
+# Configurações do Claude Code (têm a chave do OmniRoute)
+settings.json
+settings.*.json
+.claude/settings.local.json
+
+# Passagem de trabalho entre Claude Code e Antigravity: é de cada projeto, não do kit
+ANDAMENTO.md
+
+# Sistema / editores
+.vscode/*
+!.vscode/extensions.json
+Thumbs.db
+Desktop.ini
+.DS_Store
+node_modules/

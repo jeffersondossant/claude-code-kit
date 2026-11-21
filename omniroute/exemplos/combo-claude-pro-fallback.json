@@ -1,0 +1,19 @@
+{
+  "_comentario": "Exemplo de referência do combo de fallback usado com o Claude Code. Os modelos dependem das SUAS assinaturas e dos provedores conectados no seu OmniRoute: ajuste a lista. Crie em Combinações -> Criar Combo, estratégia priority, nesta ordem.",
+  "name": "claude-pro-fallback",
+  "strategy": "priority",
+  "description": "Claude como provedor principal, com fallback automático para os outros provedores conectados quando houver indisponibilidade ou limite de uso.",
+  "models": [
+    { "model": "cc/claude-opus-5-5", "providerId": "claude" },
+    { "model": "cc/claude-sonnet-5-5", "providerId": "claude" },
+    { "model": "cc/claude-sonnet-4-5-20250929", "providerId": "claude" },
+    { "model": "cc/claude-haiku-4-5-20251001", "providerId": "claude" },
+    { "model": "openai/gpt-5.4", "providerId": "openai" },
+    { "model": "cx/gpt-5.6-terra", "providerId": "codex" },
+    { "model": "cx/gpt-6-luna", "providerId": "codex" },
+    { "model": "openai/gpt-5.4-mini", "providerId": "openai" },
+    { "model": "gemini/gemini-3.1-flash-lite", "providerId": "gemini" },
+    { "model": "gemini/gemini-3-flash-preview", "providerId": "gemini" },
+    { "model": "gemini/gemini-3.8-flash", "providerId": "gemini" }
+  ]
+}
