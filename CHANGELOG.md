@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — 2026-11-21
+- **Regra do `ANDAMENTO.md` reforçada (obrigatória, sem exceção)** no `CLAUDE.md` e no `GEMINI.md` globais instalados pelo kit:
+  - ler antes de agir e atualizar na mesma resposta sempre que algo for concluído, decidido, ficar pendente ou for configurado fora do repositório;
+  - atualizar antes de cada commit;
+  - estrutura fixa, com a "Situação atual" reescrita (não diário).
+  - Saiu a exceção para tarefas de um passo.
+
 ## 0.1.2 — 2026-11-21
 - Combo de exemplo com **17 modelos**: assinaturas (Claude, Codex) → gratuitos (NVIDIA NIM: Kimi K3.1 Pro, Nemotron 3 Ultra, GLM 5.3 Flash, MiniMax M3.1 Flash; Gemini; OpenRouter `:free`) → OpenAI paga por último. Todos testados numa tarefa real do Claude Code com ferramentas.
 - Tutorial: critério para provedores gratuitos (~60 mil tokens por requisição + ferramentas; Groq gratuito não aguenta), "Importar de /models" e como limitar o gasto da OpenAI (créditos pré-pagos, sem recarga automática). O orçamento do OmniRoute bloqueia a chave inteira, por isso não é usado para isso.

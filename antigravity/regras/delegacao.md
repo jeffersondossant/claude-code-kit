@@ -15,10 +15,26 @@ Regras:
 - Nunca envie ao `agy` senhas, tokens, chaves, `.env`, `settings.json` ou a pasta de dados do OmniRoute.
 - Revisão pelo `agy` ao final das tarefas: **só quando o usuário pedir** (`/agy:revisar` ou "pede pro agy revisar").
 
-## Continuidade: `ANDAMENTO.md`
+## `ANDAMENTO.md`: memória do projeto (OBRIGATÓRIO, sem exceção)
 
-Quando os modelos do OmniRoute se esgotam, o usuário continua o trabalho no Antigravity pelo VS Code: *Ctrl+Shift+P → Tasks: Run Task → Continuar no Antigravity*, ou `Ctrl+Alt+Shift+A`. O Antigravity não vê esta conversa; ele lê o `CLAUDE.md`, o `ANDAMENTO.md` e o `git status`. Por isso:
-- **No início de uma conversa num projeto**, se existir `ANDAMENTO.md` na raiz, leia-o antes de agir: o trabalho pode ter avançado no Antigravity. Confira também o `git status`.
-- **Em tarefas com mais de uma etapa**, mantenha o `ANDAMENTO.md` na raiz do projeto, atualizando-o ao concluir cada etapa, sem esperar o fim. Seções: data da última atualização, situação atual, decisões tomadas (com o motivo), pendências e próximo passo. Escreva para quem não viu a conversa, com caminhos e comandos concretos.
-- Tarefas de um passo só não precisam de `ANDAMENTO.md`.
-- O `ANDAMENTO.md` não leva segredos.
+O usuário troca de ferramenta a qualquer momento: este chat, o Claude Code no VS Code, o Antigravity (`Ctrl+Alt+Shift+A`), outro PC. Nenhuma delas vê as conversas das outras. A **única memória compartilhada** é o `ANDAMENTO.md` na raiz de cada projeto. Se algo não está lá, para a próxima conversa **não aconteceu**.
+
+**Ao começar** qualquer conversa num projeto: leia o `ANDAMENTO.md` (e rode `git status` e `git log --oneline -5`) **antes de agir**. O trabalho pode ter avançado em outra ferramenta. Se não existir, crie-o na primeira mudança.
+
+**Atualize SEMPRE, na mesma resposta em que acontecer**, sem esperar o fim da conversa e mesmo em tarefas pequenas, quando:
+- concluir qualquer etapa, tarefa ou correção;
+- tomar ou mudar uma decisão;
+- surgir, mudar ou ser resolvida uma pendência (inclusive "o usuário precisa fazer X");
+- algo for instalado, configurado ou alterado fora do repositório (painel, variáveis, tarefas agendadas, contas);
+- **antes de cada commit**: o `ANDAMENTO.md` atualizado vai no mesmo commit;
+- antes de encerrar a conversa ou quando a cota estiver acabando.
+
+**Estrutura fixa**:
+1. **Cabeçalho**: data da última atualização, versão e quem atualizou (Claude Code ou Antigravity).
+2. **Situação atual**: um **retrato do agora**, **reescrito** a cada atualização. Não é diário: nada de empilhar "fiz X, depois Y"; o histórico vai para o `CHANGELOG.md` e para o Git.
+3. **Decisões tomadas**, cada uma com o **porquê**.
+4. **Armadilhas já resolvidas**: o que deu errado e como evitar.
+5. **Pendências**: numeradas, com data quando houver, dizendo quem faz (usuário ou Claude). Remova as resolvidas.
+6. **Próximo passo**: o que a próxima conversa deve fazer primeiro.
+
+Escreva para quem **não viu a conversa**: caminhos, comandos e nomes concretos. **Nunca** inclua segredos (senhas, tokens, chaves, conteúdo de `.env`).
