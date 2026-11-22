@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 — 2026-11-21
+- Combo de exemplo com **17 modelos**: assinaturas (Claude, Codex) → gratuitos (NVIDIA NIM: Kimi K3.1 Pro, Nemotron 3 Ultra, GLM 5.3 Flash, MiniMax M3.1 Flash; Gemini; OpenRouter `:free`) → OpenAI paga por último. Todos testados numa tarefa real do Claude Code com ferramentas.
+- Tutorial: critério para provedores gratuitos (~60 mil tokens por requisição + ferramentas; Groq gratuito não aguenta), "Importar de /models" e como limitar o gasto da OpenAI (créditos pré-pagos, sem recarga automática). O orçamento do OmniRoute bloqueia a chave inteira, por isso não é usado para isso.
+
 ## 0.1.1 — 2026-11-21
 - **A tarefa `OmniRoute` roda em segundo plano** (S4U, sem janela), liga com o Windows e no logon, e tem um **vigia a cada 5 minutos**. Antes, rodando "no logon", o Windows 11 podia prender o PowerShell oculto a uma janela de terminal, e fechar essa janela ou bloquear a tela derrubava o servidor (`0xC000013A`).
 - Tutorial atualizado (tarefa, conferência e problemas comuns).

@@ -172,7 +172,13 @@ Clique em **Testar** em cada um. Os que funcionarem aparecem como *conectado*.
 **3C.3 Combo de fallback** (menu **Combinações → Criar Combo**):
 - nome **`claude-pro-fallback`**, estratégia **priority**: tenta o 1º modelo; se falhar ou esgotar, o 2º; e assim por diante;
 - comece pelos modelos da sua assinatura Claude e termine pelos de reserva. Um exemplo completo está em [`omniroute/exemplos/combo-claude-pro-fallback.json`](../omniroute/exemplos/combo-claude-pro-fallback.json);
-- só aparecem modelos de provedores conectados.
+- só aparecem modelos de provedores conectados. Se um modelo não aparecer no editor, clique em **Importar de /models** na página do provedor;
+- **ordem recomendada:** assinaturas (Claude, depois Codex) → **gratuitos** → pagos por último. Gratuitos testados em 21/11/2026:
+  - **NVIDIA NIM** (build.nvidia.com, sem cartão): Kimi K3.1 Pro, Nemotron 3 Ultra, GLM 5.3 Flash e MiniMax M3.1 Flash;
+  - **Gemini** (AI Studio);
+  - **OpenRouter** (só modelos `:free`; 50 requisições/dia na conta gratuita);
+- **critério para um gratuito entrar no combo:** aguentar ~60 mil tokens de entrada por requisição e a chamada de ferramentas. O Groq gratuito (6–12 mil tokens por minuto) não aguenta; Mistral/Codestral não tem API gratuita. Teste cada modelo com uma tarefa real antes (`claude -p --model <provedor/modelo>`);
+- **OpenAI paga:** use créditos pré-pagos com a **recarga automática desligada**; esse é o teto de gasto. O orçamento do OmniRoute vale para a chave inteira e, ao estourar, bloqueia todos os modelos.
 
 ✅ `(Invoke-RestMethod http://localhost:20128/api/v1/combos).data | % { $_.name; $_.models.model }` mostra o combo e a ordem.
 

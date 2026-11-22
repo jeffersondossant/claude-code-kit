@@ -7,7 +7,7 @@
 Kit para usar o **Claude Code** no Windows sem ficar parado quando o limite acaba:
 
 - **OmniRoute**: proxy local (`http://localhost:20128`) entre o Claude Code e vários provedores. Inclui:
-  - **fallback automático**: Claude → OpenAI/Codex → Gemini;
+  - **fallback automático**: Claude → Codex → gratuitos (NVIDIA NIM, Gemini, OpenRouter) → OpenAI paga;
   - **compressão de tokens** (Lite + RTK);
   - pasta de dados protegida, início automático com o Windows e **backup cifrado** (AES-256);
   - **MCP somente leitura**, para o Claude consultar cota e saúde do proxy.
@@ -30,7 +30,7 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
 **Requisitos:**
 - Windows 11 com `winget`;
 - assinatura Claude (Pro/Max);
-- opcionais: OpenAI/Codex/Gemini API e conta Google com **Google AI Pro**.
+- opcionais: assinatura ChatGPT (Codex), contas **gratuitas** NVIDIA NIM e OpenRouter, chave Gemini (AI Studio), OpenAI API e conta Google com **Google AI Pro**.
 
 1. Baixe o kit:
    ```powershell
