@@ -34,9 +34,11 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
 
 1. Baixe o kit:
    ```powershell
-   git clone https://gitlab.com/jeffersondossant/claude-code-kit.git "$env:USERPROFILE\claude-code-kit"
+   # Escolha um dos dois espelhos públicos equivalentes:
+   git clone https://github.com/jeffersondossant/claude-code-kit.git "$env:USERPROFILE\claude-code-kit"
+   # ou: git clone https://gitlab.com/jeffersondossant/claude-code-kit.git "$env:USERPROFILE\claude-code-kit"
    ```
-   Sem Git, use **Code → Download ZIP** na página do projeto.
+   Sem Git, use **Code → Download ZIP** em qualquer uma das páginas do projeto.
 2. Num PowerShell **como Administrador**, na pasta do kit:
    ```powershell
    powershell -ExecutionPolicy Bypass -File .\instalar.ps1
@@ -44,7 +46,7 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
    O script pergunta a pasta base, instala tudo e, no fim, **lista as configurações internas** que faltam (painel do OmniRoute, chave no `settings.json`, compressão e MCP). Use `-Simular` para ver o que ele faria sem mudar nada.
 3. Siga a lista do final, com o [**tutorial completo**](docs/TUTORIAL-INSTALACAO.md).
 
-**Só o plugin do Antigravity**, sem o resto do kit: no chat do Claude Code, rode `/plugin marketplace add https://gitlab.com/jeffersondossant/claude-code-kit.git` e depois `/plugin install agy@claude-code-kit`.
+**Só o plugin do Antigravity**, sem o resto do kit: no chat do Claude Code, rode `/plugin marketplace add https://github.com/jeffersondossant/claude-code-kit.git` e depois `/plugin install agy@claude-code-kit`. O espelho GitLab (`https://gitlab.com/jeffersondossant/claude-code-kit.git`) também funciona.
 
 ## Como funciona no dia a dia
 

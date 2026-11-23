@@ -1,4 +1,9 @@
 # Changelog
+
+## 0.2.4 — 2026-11-23
+- Espelho público no GitHub criado em `https://github.com/jeffersondossant/claude-code-kit`, mantendo o GitLab como origem e os dois repositórios sincronizados.
+- `README.md`: instalação e marketplace do plugin agora mostram o GitHub como endereço principal e o GitLab como alternativa equivalente.
+
 ## 0.2.3 — 2026-11-23
 - `omniroute/scripts/backup.ps1`: o backup é gravado em `.tmp` e só no fim vira o definitivo (`[IO.File]::Replace` com `[NullString]::Value`, porque `$null` falha no PowerShell 5.1). Se algo falhar, o backup anterior fica intacto.
 - `instalar.ps1`: `try/catch/finally` apaga a pasta temporária com as chaves mesmo se o `restaurar.ps1` falhar.
