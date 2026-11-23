@@ -132,8 +132,13 @@ elseif (Test-Path -LiteralPath $Kit.ArquivoBackup) {
     $tmp = Join-Path $env:TEMP 'omniroute-extrair'
     Write-Faz "extrair o settings.json do backup cifrado $($Kit.ArquivoBackup) (pede a SENHA DO BACKUP)"
     if (-not $Simular) {
-      & (Join-Path $raiz 'omniroute\scripts\restaurar.ps1') -DataDir $tmp
-      Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+      try {
+        & (Join-Path $raiz 'omniroute\scripts\restaurar.ps1') -DataDir $tmp
+      } catch {
+        Write-Aviso "Erro ao executar restaurar.ps1: $_"
+      } finally {
+        Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+      }
       if (Test-Path -LiteralPath $settings) { Write-Ok 'settings.json restaurado; cópia temporária das chaves apagada' }
     }
   }

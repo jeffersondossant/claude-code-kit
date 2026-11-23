@@ -39,7 +39,8 @@ function Protect-BytesComSenha([byte[]]$Dados, [Security.SecureString]$Senha) {
   $aes = [Security.Cryptography.Aes]::Create()
   $aes.KeySize = 256; $aes.Mode = 'CBC'; $aes.Padding = 'PKCS7'
   $aes.Key = [byte[]]$k.Cifra; $aes.IV = $iv
-  try { $cifrado = $aes.CreateEncryptor().TransformFinalBlock($Dados, 0, $Dados.Length) } finally { $aes.Dispose() }
+  $enc = $aes.CreateEncryptor()
+  try { $cifrado = $enc.TransformFinalBlock($Dados, 0, $Dados.Length) } finally { $enc.Dispose(); $aes.Dispose() }
 
   $cab = Join-Bytes @($Script:MagicBackup, [BitConverter]::GetBytes([int]$Script:IteracoesPbkdf2), $salt, $iv)
   $corpo = Join-Bytes @($cab, $cifrado)
@@ -73,5 +74,6 @@ function Unprotect-BytesComSenha([byte[]]$Arquivo, [Security.SecureString]$Senha
   $aes = [Security.Cryptography.Aes]::Create()
   $aes.KeySize = 256; $aes.Mode = 'CBC'; $aes.Padding = 'PKCS7'
   $aes.Key = [byte[]]$k.Cifra; $aes.IV = [byte[]]$iv
-  try { return ,($aes.CreateDecryptor().TransformFinalBlock($corpo, $ini, $corpo.Length - $ini)) } finally { $aes.Dispose() }
+  $dec = $aes.CreateDecryptor()
+  try { return ,($dec.TransformFinalBlock($corpo, $ini, $corpo.Length - $ini)) } finally { $dec.Dispose(); $aes.Dispose() }
 }

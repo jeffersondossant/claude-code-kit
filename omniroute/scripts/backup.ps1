@@ -89,7 +89,19 @@ if ($teste.Length -le 0) { throw 'Falha na verificação do backup.' }
 [Array]::Clear($teste, 0, $teste.Length)
 
 New-Item -ItemType Directory -Path (Split-Path $Script:ArquivoBackup) -Force | Out-Null
-[IO.File]::WriteAllBytes($Script:ArquivoBackup, $cifrado)
+$arquivoTmp = "$($Script:ArquivoBackup).tmp"
+try {
+  [IO.File]::WriteAllBytes($arquivoTmp, $cifrado)
+  if (Test-Path -LiteralPath $Script:ArquivoBackup) {
+    # [NullString]::Value: no PowerShell 5.1, $null viraria texto vazio e o Replace recusaria o caminho
+    [IO.File]::Replace($arquivoTmp, $Script:ArquivoBackup, [NullString]::Value)
+  } else {
+    [IO.File]::Move($arquivoTmp, $Script:ArquivoBackup)
+  }
+} catch {
+  if (Test-Path -LiteralPath $arquivoTmp) { Remove-Item -LiteralPath $arquivoTmp -Force -ErrorAction SilentlyContinue }
+  throw "Falha ao gravar o backup (arquivo anterior preservado): $_"
+}
 Write-Ok ("Backup gravado e conferido: {0} ({1:N0} KB)" -f $Script:ArquivoBackup, ($cifrado.Length / 1KB))
 
 if ($SemEnviar -or -not $Kit.EnviarBackupAoGit) {

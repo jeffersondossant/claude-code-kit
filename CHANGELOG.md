@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.3 — 2026-11-23
+- `omniroute/scripts/backup.ps1`: o backup é gravado em `.tmp` e só no fim vira o definitivo (`[IO.File]::Replace` com `[NullString]::Value`, porque `$null` falha no PowerShell 5.1). Se algo falhar, o backup anterior fica intacto.
+- `instalar.ps1`: `try/catch/finally` apaga a pasta temporária com as chaves mesmo se o `restaurar.ps1` falhar.
+- `omniroute/scripts/lib/cripto.ps1`: `Dispose` do `CreateEncryptor`/`CreateDecryptor`. Formato, algoritmo e derivação de chave inalterados (backups antigos continuam legíveis).
 
 ## 0.2.2 — 2026-11-23
 - Rodapé "Comandos para agora": legendas corrigidas em `antigravity/regras/delegacao.md`. `/model opusplan` não tira do modo Plano; quem entra e sai é o `Shift+Tab`. O `/model opusplan` ficou só depois de `/model claude-pro-fallback`, para voltar à divisão automática.
