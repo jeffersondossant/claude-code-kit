@@ -160,7 +160,7 @@ if ($novoOmni) { Write-Host "    Instalação nova do OmniRoute em $($Kit.PastaD
 Write-Faz 'omniroute\scripts\instalar.ps1'
 if (-not $Simular) { & (Join-Path $raiz 'omniroute\scripts\instalar.ps1') }
 if ($novoOmni) {
-  $pendencias.Add('Painel do OmniRoute (http://localhost:20128): trocar a senha CHANGEME, conectar os provedores, criar o combo claude-pro-fallback e a chave Claude-Code - tutorial, etapa 3C')
+  $pendencias.Add('Painel do OmniRoute (http://localhost:20128): trocar a senha CHANGEME, conectar os provedores, criar os combos claude-pro-fallback, claude-sonnet-fallback e claude-rapido-fallback e a chave Claude-Code - tutorial, etapa 3C')
   $pendencias.Add('Compressão: Contexto -> Configurações de compressão e Combos de Engines (claude-code-seguro) - tutorial, etapa 5.1')
   $pendencias.Add('Primeiro backup cifrado: powershell -ExecutionPolicy Bypass -File .\omniroute\scripts\backup.ps1')
 }
@@ -214,7 +214,7 @@ if (-not $Simular) {
   & (Join-Path $raiz 'antigravity\scripts\verificar.ps1') -SemTesteReal
 }
 Write-Host "`nFalta fazer à mão (configurações internas):" -ForegroundColor Yellow
-$pendencias.Add('Reiniciar o VS Code e, no chat do Claude Code, conferir o modelo: /model claude-pro-fallback')
+$pendencias.Add('Reiniciar o VS Code e, no chat do Claude Code, conferir o modelo: /model opusplan')
 $pendencias.Add('Na 1ª vez do Ctrl+Alt+Shift+A em cada projeto, responder "Yes, I trust this folder" no agy')
 $i = 0; foreach ($p in $pendencias) { $i++; Write-Host "  $i. $p" }
 Write-Host "`nDetalhes: docs\TUTORIAL-INSTALACAO.md" -ForegroundColor DarkGray

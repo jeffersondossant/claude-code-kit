@@ -182,6 +182,16 @@ Clique em **Testar** em cada um. Os que funcionarem aparecem como *conectado*.
 
 ✅ `(Invoke-RestMethod http://localhost:20128/api/v1/combos).data | % { $_.name; $_.models.model }` mostra o combo e a ordem.
 
+**3C.3a Combos por papel** (para o `opusplan` da etapa 4, que poupa o Opus). Em **Combinações**, use **Duplicar** no `claude-pro-fallback` e **Editar** na cópia:
+- **`claude-sonnet-fallback`**: remova o Opus. O Sonnet fica em primeiro. Atende o trabalho fora do modo Plano e os subagentes.
+- **`claude-rapido-fallback`**: deixe só o Haiku e os gratuitos rápidos (por exemplo GLM Flash, MiniMax Flash, Gemini Flash, OpenRouter `:free`), sem pagos. Atende as tarefas de fundo, como o título da conversa.
+
+Exemplos em [`omniroute/exemplos/`](../omniroute/exemplos/).
+
+**Atenção:** se houver em *Gerenciador de API → Configurar roteamento* uma regra da chave `Claude-Code` valendo para *"Todos os modelos e combos solicitados"*, ela reescreve todo pedido e anula os combos novos.
+- Mude a condição para **Um ID exato ou curinga** com **`cc/*`**.
+- O simulador da mesma página deve responder *"Nenhuma regra salva corresponde"* para `claude-sonnet-fallback`.
+
 **3C.3b Troca proativa aos 95%** (**Cota do Provedor → Completo → Editar pontos de corte** em cada assinatura):
 - coloque **5** nas janelas da conta Claude Code (*Session* e *Weekly*) e do Codex (*Monthly*);
 - o número é a **% mínima restante**: 5 = a conta é pulada ao atingir 95% de uso, **antes** do erro de limite, e o combo segue para o próximo modelo;
@@ -215,13 +225,19 @@ notepad "$env:USERPROFILE\.claude\settings.json"
 |---|---|---|
 | `ANTHROPIC_BASE_URL` | `http://localhost:20128` | manda tudo para o OmniRoute |
 | `ANTHROPIC_AUTH_TOKEN` | chave `Claude-Code` | autentica no OmniRoute |
-| `ANTHROPIC_MODEL` e `model` | **`claude-pro-fallback`** | **único modelo com fallback automático** |
-| `ANTHROPIC_DEFAULT_*_MODEL` | `cc/...` | opções da lista do VS Code; cada uma vai **só para aquele modelo**, sem fallback |
+| `ANTHROPIC_MODEL` e `model` | **`opusplan`** | Opus só no modo Plano; o resto no Sonnet. Poupa a cota do Opus sem trocar de modelo a cada pergunta, o que perderia o cache de prompt |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | `claude-pro-fallback` | o "Opus" do `opusplan`, com fallback |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | `claude-sonnet-fallback` | execução e dia a dia, com fallback |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | `claude-rapido-fallback` | tarefas de fundo e subagentes `haiku` |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | `sonnet` | subagentes não herdam o Opus do modo Plano |
 | `cleanupPeriodDays` | `36500` | **não apagar o histórico de conversas** (o padrão apaga após 30 dias). Não use `0`, que em algumas versões significa não guardar nada. |
 
-Reinicie o VS Code. Se o seletor de modelos mostrar outro modelo, digite `/model claude-pro-fallback` no chat. O aviso "doesn't recognize the model" é inofensivo.
+Reinicie o VS Code. Se o seletor de modelos mostrar outro modelo, digite `/model opusplan` no chat. Para uma tarefa difícil inteira no Opus, use `/model claude-pro-fallback`. O aviso "doesn't recognize the model" é inofensivo.
 
-✅ No chat, "responda apenas OK" funciona, e a requisição aparece no painel em *Início → Requisições recentes*.
+✅ Mande "responda apenas OK" e depois uma mensagem no modo Plano (`Shift+Tab`). Em **Logs** do painel, a coluna *Combinação* mostra:
+- `claude-sonnet-fallback` na primeira;
+- `claude-pro-fallback` no modo Plano;
+- `claude-rapido-fallback` no título.
 
 ---
 
@@ -319,7 +335,7 @@ powershell -ExecutionPolicy Bypass -File .\omniroute\scripts\backup.ps1
 | OmniRoute no ar | `Invoke-WebRequest http://localhost:20128 -UseBasicParsing` | 200 |
 | Inicia com o Windows (segundo plano) | `(Get-ScheduledTask -TaskName OmniRoute).Principal.LogonType` | `S4U` |
 | Pasta de dados | `[Environment]::GetEnvironmentVariable('DATA_DIR','User')` | sua `PastaDadosOmni` |
-| Modelo do Claude Code | chat do VS Code | `claude-pro-fallback` |
+| Modelo do Claude Code | chat do VS Code | `opusplan` |
 | Histórico | `(Get-Content "$env:USERPROFILE\.claude\settings.json" -Raw \| ConvertFrom-Json).cleanupPeriodDays` | `36500` |
 | Compressão | painel → *Contexto → Combos de Engines* | perfil `claude-code-seguro` |
 | MCP | `claude mcp get omniroute` | ✔ Connected |
@@ -336,7 +352,8 @@ powershell -ExecutionPolicy Bypass -File .\omniroute\scripts\backup.ps1
 | OmniRoute cai ao fechar um terminal ou bloquear a tela (código `0xC000013A`) | Tarefa antiga, "no logon": o Windows 11 prendia o processo a uma janela de terminal | Rode o `omniroute\scripts\instalar.ps1` 🛡️ como Administrador: a tarefa passa a rodar em segundo plano (S4U) com vigia de 5 min |
 | `Register-ScheduledTask: Acesso negado` | A tarefa foi criada antes como Administrador | Rode o instalador 🛡️ como Administrador |
 | "a execução de scripts foi desabilitada" | Política de execução do Windows | `powershell -ExecutionPolicy Bypass -File ...` |
-| Chat para quando acaba o limite do Claude | Modelo da lista (`cc/...`) escolhido | `/model claude-pro-fallback` |
+| Chat para quando acaba o limite do Claude | Modelo da lista (`cc/...`) escolhido | `/model opusplan` |
+| Tudo sai pelo Opus, mesmo com `opusplan` | Regra de roteamento da chave valendo para todos os modelos | Condição `cc/*` (etapa 3C.3a) |
 | Todos os modelos esgotados | Cotas acabaram | **Ctrl+Alt+Shift+A**, que abre o Antigravity no projeto |
 | Conversas antigas sumindo | `cleanupPeriodDays` ausente (o padrão apaga após 30 dias) | Etapa 4 |
 | Acentos quebrados nos scripts | `.ps1` salvo sem BOM (PowerShell 5.1) | Salvar como **UTF-8 com BOM** |

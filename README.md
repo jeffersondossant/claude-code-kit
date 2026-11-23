@@ -51,7 +51,8 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
 | Situação | O que acontece |
 |---|---|
 | Uso normal | Claude Code → OmniRoute → Claude |
-| Limite do Claude acabou | O OmniRoute passa sozinho para os próximos modelos do combo `claude-pro-fallback` |
+| Uso normal, poupando o Opus | Modelo `opusplan`: Opus só no modo Plano (`claude-pro-fallback`), Sonnet no resto (`claude-sonnet-fallback`), tarefas de fundo no Haiku e gratuitos (`claude-rapido-fallback`) |
+| Limite do Claude acabou | O OmniRoute passa sozinho para os próximos modelos do combo em uso |
 | Pesquisa longa, leitura de muitos arquivos, segunda opinião | O Claude delega ao `agy` (cota do Google), avisa e confere o resultado |
 | Todos os modelos esgotados | **Ctrl+Alt+Shift+A** abre o Antigravity no projeto, que continua pelo `ANDAMENTO.md` |
 
@@ -76,7 +77,7 @@ Copie `config.exemplo.psd1` para **`config.local.psd1`**, que fica fora do Git. 
 
 Modelos prontos:
 - [`omniroute/claude-settings.exemplo.json`](omniroute/claude-settings.exemplo.json): `settings.json` do Claude Code;
-- [`omniroute/exemplos/combo-claude-pro-fallback.json`](omniroute/exemplos/combo-claude-pro-fallback.json): combo de fallback.
+- [`omniroute/exemplos/`](omniroute/exemplos/): os três combos (`claude-pro-fallback`, `claude-sonnet-fallback`, `claude-rapido-fallback`).
 
 ## Segurança
 - **Pasta de dados** com acesso restrito ao seu usuário, SYSTEM e Administradores.

@@ -1,0 +1,24 @@
+{
+  "_comentario": "Combo da execução e do dia a dia (papel sonnet do opusplan, testado em 2026-11-23). É o claude-pro-fallback sem o Opus. Crie com Duplicar no claude-pro-fallback e remova o Opus.",
+  "name": "claude-sonnet-fallback",
+  "strategy": "priority",
+  "description": "Sonnet primeiro, sem Opus; mesma cadeia de fallback (Codex, gratuitos, OpenAI paga por último).",
+  "models": [
+    { "model": "cc/claude-sonnet-5-5", "providerId": "claude" },
+    { "model": "cc/claude-sonnet-4-5-20250929", "providerId": "claude" },
+    { "model": "cc/claude-haiku-4-5-20251001", "providerId": "claude" },
+    { "model": "cx/gpt-5.6-terra", "providerId": "codex" },
+    { "model": "cx/gpt-6-luna", "providerId": "codex" },
+    { "model": "nvidia/moonshotai/kimi-k3.1-pro", "providerId": "nvidia" },
+    { "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b", "providerId": "nvidia" },
+    { "model": "nvidia/z-ai/glm-5.3-flash", "providerId": "nvidia" },
+    { "model": "nvidia/minimaxai/minimax-m3.1-flash", "providerId": "nvidia" },
+    { "model": "gemini/gemini-3.8-flash", "providerId": "gemini" },
+    { "model": "gemini/gemini-3-flash-preview", "providerId": "gemini" },
+    { "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free", "providerId": "openrouter" },
+    { "model": "openrouter/google/gemma-4-31b-it:free", "providerId": "openrouter" },
+    { "model": "gemini/gemini-3.1-flash-lite", "providerId": "gemini" },
+    { "model": "openai/gpt-5.4", "providerId": "openai" },
+    { "model": "openai/gpt-5.4-mini", "providerId": "openai" }
+  ]
+}

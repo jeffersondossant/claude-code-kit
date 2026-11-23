@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 — 2026-11-23
+- **Cada trabalho no modelo certo (`opusplan`)**, para poupar a cota do Opus:
+  - modo Plano → `claude-pro-fallback` (Opus primeiro);
+  - execução e subagentes → `claude-sonnet-fallback` (sem Opus);
+  - tarefas de fundo → `claude-rapido-fallback` (Haiku e gratuitos, sem pagos).
+  
+  Todos com fallback. O modelo de `settings.json` usa `opusplan`, os `ANTHROPIC_DEFAULT_OPUS/SONNET/HAIKU_MODEL` apontam para os combos e `CLAUDE_CODE_SUBAGENT_MODEL` = `sonnet`.
+- Exemplos `omniroute/exemplos/combo-claude-sonnet-fallback.json` e `combo-claude-rapido-fallback.json`.
+- Tutorial: etapa 3C.3a (combos por papel e o cuidado com a regra de roteamento por chave, que deve valer só para `cc/*`), tabela da etapa 4 e conferência pela coluna *Combinação* dos Logs.
+
 ## 0.1.4 — 2026-11-23
 - Tutorial: **troca proativa de conta aos 95%** com os pontos de corte por conta do OmniRoute (Quota Preflight). As assinaturas são puladas antes do erro de limite.
 
