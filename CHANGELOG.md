@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.2 — 2026-11-23
+- Rodapé "Comandos para agora": legendas corrigidas em `antigravity/regras/delegacao.md`. `/model opusplan` não tira do modo Plano; quem entra e sai é o `Shift+Tab`. O `/model opusplan` ficou só depois de `/model claude-pro-fallback`, para voltar à divisão automática.
+
 ## 0.2.1 — 2026-11-23
 - **Rodapé "Comandos para agora"**: regra nova em `antigravity/regras/delegacao.md`. O Claude fecha as respostas úteis com 2 a 4 comandos escolhidos pelo contexto atual, cada um com uma legenda curta, a partir de uma tabela de contextos (para não inventar comandos). Omitido em respostas curtas e sem repetição em sequência.
 

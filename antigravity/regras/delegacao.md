@@ -32,8 +32,8 @@ Regras:
 
 | Contexto | Comandos que costumam servir |
 |---|---|
-| Vai planejar ou decidir algo grande | `Shift+Tab` (alterna para o modo Plano, em que o Opus planeja); `/model opusplan` (volta à divisão automática) |
-| Tarefa muito difícil, do começo ao fim | `/model claude-pro-fallback` (tudo no Opus); `/model opusplan` (volta ao normal) |
+| Vai planejar ou decidir algo grande | `Shift+Tab` (entra no modo Plano, em que o Opus planeja; apertar de novo sai dele) |
+| Tarefa muito difícil, do começo ao fim | `/model claude-pro-fallback` (tudo no Opus, mesmo fora do Plano); `/model opusplan` (volta à divisão automática depois) |
 | Precisa de pesquisa, comparação ou documentação atual | `/agy:pesquisar` (pesquisa na web com fontes, pela cota do Gemini); `/agy:perguntar` (pergunta direta ao Gemini) |
 | Quer segunda opinião ou revisão do que foi feito | `/agy:revisar` (o Gemini revisa as mudanças atuais) |
 | Quer entregar uma tarefa inteira ao Gemini | `/agy:delegar` (o agy pode alterar arquivos) |
