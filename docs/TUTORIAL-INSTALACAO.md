@@ -182,6 +182,12 @@ Clique em **Testar** em cada um. Os que funcionarem aparecem como *conectado*.
 
 ✅ `(Invoke-RestMethod http://localhost:20128/api/v1/combos).data | % { $_.name; $_.models.model }` mostra o combo e a ordem.
 
+**3C.3b Troca proativa aos 95%** (**Cota do Provedor → Completo → Editar pontos de corte** em cada assinatura):
+- coloque **5** nas janelas da conta Claude Code (*Session* e *Weekly*) e do Codex (*Monthly*);
+- o número é a **% mínima restante**: 5 = a conta é pulada ao atingir 95% de uso, **antes** do erro de limite, e o combo segue para o próximo modelo;
+- a conta volta a ser usada quando a janela reinicia;
+- o corte por conta funciona sem ligar nada mais.
+
 **3C.4 Chave do Claude Code** (**Gerenciador API → Criar Chave de API**):
 - nome **`Claude-Code`**, política padrão;
 - **copie a chave**, que só aparece uma vez. Você vai usá-la na etapa 4.

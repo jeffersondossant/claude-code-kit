@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4 — 2026-11-23
+- Tutorial: **troca proativa de conta aos 95%** com os pontos de corte por conta do OmniRoute (Quota Preflight). As assinaturas são puladas antes do erro de limite.
+
 ## 0.1.3 — 2026-11-21
 - **Regra do `ANDAMENTO.md` reforçada (obrigatória, sem exceção)** no `CLAUDE.md` e no `GEMINI.md` globais instalados pelo kit:
   - ler antes de agir e atualizar na mesma resposta sempre que algo for concluído, decidido, ficar pendente ou for configurado fora do repositório;
