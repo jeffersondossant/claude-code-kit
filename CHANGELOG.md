@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.1 — 2026-11-23
+- **Rodapé "Comandos para agora"**: regra nova em `antigravity/regras/delegacao.md`. O Claude fecha as respostas úteis com 2 a 4 comandos escolhidos pelo contexto atual, cada um com uma legenda curta, a partir de uma tabela de contextos (para não inventar comandos). Omitido em respostas curtas e sem repetição em sequência.
+
 ## 0.2.0 — 2026-11-23
 - **Cada trabalho no modelo certo (`opusplan`)**, para poupar a cota do Opus:
   - modo Plano → `claude-pro-fallback` (Opus primeiro);

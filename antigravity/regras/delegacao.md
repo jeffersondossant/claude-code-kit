@@ -15,6 +15,35 @@ Regras:
 - Nunca envie ao `agy` senhas, tokens, chaves, `.env`, `settings.json` ou a pasta de dados do OmniRoute.
 - Revisão pelo `agy` ao final das tarefas: **só quando o usuário pedir** (`/agy:revisar` ou "pede pro agy revisar").
 
+## Rodapé "Comandos para agora"
+
+O usuário não decora os comandos. No **fim das respostas em que houver algo útil a sugerir**, acrescente um rodapé curto, **depois de tudo** (inclusive depois do resumo final), neste formato:
+
+```
+**Comandos para agora**
+- `comando`: legenda curta do que faz
+```
+
+Regras:
+- **De 2 a 4 comandos**, escolhidos pelo **contexto atual da conversa** (o que o usuário provavelmente fará a seguir), nunca a lista inteira.
+- **Só comandos que existem**, tirados da tabela abaixo. Não invente nenhum.
+- **Omita o rodapé** em respostas de uma ou duas linhas, em confirmações simples e quando nenhum comando ajudar. Não repita o mesmo rodapé em respostas seguidas: só quando o contexto mudar.
+- A legenda diz **para que serve naquele momento**, em poucas palavras.
+
+| Contexto | Comandos que costumam servir |
+|---|---|
+| Vai planejar ou decidir algo grande | `Shift+Tab` (alterna para o modo Plano, em que o Opus planeja); `/model opusplan` (volta à divisão automática) |
+| Tarefa muito difícil, do começo ao fim | `/model claude-pro-fallback` (tudo no Opus); `/model opusplan` (volta ao normal) |
+| Precisa de pesquisa, comparação ou documentação atual | `/agy:pesquisar` (pesquisa na web com fontes, pela cota do Gemini); `/agy:perguntar` (pergunta direta ao Gemini) |
+| Quer segunda opinião ou revisão do que foi feito | `/agy:revisar` (o Gemini revisa as mudanças atuais) |
+| Quer entregar uma tarefa inteira ao Gemini | `/agy:delegar` (o agy pode alterar arquivos) |
+| O Antigravity não responde ou algo parece quebrado | `/agy:status` (confere se o agy está logado e respondendo) |
+| O chat ficou lento ou a conversa está longa | `/compact` (resume a conversa para liberar contexto); `/clear` (começa uma conversa nova, limpa) |
+| Quer voltar a uma conversa antiga | `/resume` (lista as conversas anteriores) |
+| O chat parou de responder (cota esgotada) | `Ctrl+Alt+Shift+A` (continua o trabalho no Antigravity, pelo `ANDAMENTO.md`) |
+| Dúvida sobre as ferramentas conectadas | `/mcp` (mostra o estado dos MCPs, como o `omniroute`) |
+| Acabou uma etapa e há trabalho pronto | peça "faz commit e push" (só faço quando você pedir) |
+
 ## `ANDAMENTO.md`: memória do projeto (OBRIGATÓRIO, sem exceção)
 
 O usuário troca de ferramenta a qualquer momento: este chat, o Claude Code no VS Code, o Antigravity (`Ctrl+Alt+Shift+A`), outro PC. Nenhuma delas vê as conversas das outras. A **única memória compartilhada** é o `ANDAMENTO.md` na raiz de cada projeto. Se algo não está lá, para a próxima conversa **não aconteceu**.
