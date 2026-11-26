@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 — 2026-11-26
+- Correções da revisão do Antigravity (Gemini 4 Hydrogen) sobre a 0.3.0. Plugin `agy` 0.2.0 → 0.2.1.
+- `agy.ps1`: lê a saída do `agy` de forma assíncrona, então o tempo limite (`-Minutos`) passa a valer mesmo se o `agy` travar; pedido acima de 32 mil caracteres (limite da linha de comando do Windows) dá mensagem clara em vez de exceção.
+- `regras/delegacao.md`: nova regra "Sessão fora do OmniRoute" (na aba Code do app desktop, `haiku`/`sonnet` dos subagentes e o subagente `agy` dão 404; usar Glob/Grep/Read direto e os comandos `/agy:*`).
+- Comandos `/agy:perguntar`, `/agy:pesquisar` e `/agy:delegar` repetem a proibição de enviar segredos; `/agy:revisar` orienta a passar caminhos em vez de colar diffs grandes.
+
 ## 0.3.0 — 2026-11-26
 - Porte do `claude-code-setup` 0.8.0: **Gemini 4 Hydrogen** no plugin `agy` (0.1.0 → 0.2.0). Apelidos `hydrogen` (high, novo padrão), `hydrogen-max` e `hydrogen-rapido`; `flash` e `flash-rapido` continuam. Agente, comandos, `status.ps1` e `continuar.ps1` atualizados.
 - `antigravity/regras/delegacao.md`: nova seção "Escolha de modelo e economia de tokens" (escada Haiku → Sonnet → Opus → `agy`, subagentes simples com `model: haiku`, linha "Próxima etapa" no fim de cada etapa, troca do modelo principal só com a validação do usuário).

@@ -85,6 +85,12 @@ $argumentos += "-p=$prompt"
 $psi = New-Object Diagnostics.ProcessStartInfo
 $psi.FileName = $agy
 $psi.Arguments = ($argumentos | ForEach-Object { ConvertTo-ArgumentoWindows $_ }) -join ' '
+# O Windows limita a linha de comando a 32.767 caracteres (CreateProcess); acima disso o Start quebra.
+if ($psi.Arguments.Length -gt 32000) {
+  [Console]::Error.WriteLine("agy.ps1: pedido grande demais para a linha de comando do Windows ($($psi.Arguments.Length) de 32000 caracteres). " +
+    'Não cole diffs ou arquivos inteiros: passe os caminhos completos dos arquivos (dentro da pasta do projeto) e peça para o agy lê-los.')
+  exit 2
+}
 $psi.WorkingDirectory = $Pasta
 $psi.UseShellExecute = $false
 $psi.RedirectStandardOutput = $true
@@ -94,11 +100,15 @@ $psi.StandardErrorEncoding = $utf8
 $psi.CreateNoWindow = $true
 
 $proc = [Diagnostics.Process]::Start($psi)
+# Leitura assíncrona das duas saídas: com ReadToEnd() síncrono, um agy travado prenderia o script
+# antes do WaitForExit, e o tempo limite nunca dispararia.
 $tarefaErro = $proc.StandardError.ReadToEndAsync()
-$saida = $proc.StandardOutput.ReadToEnd()
+$tarefaSaida = $proc.StandardOutput.ReadToEndAsync()
 if (-not $proc.WaitForExit(($Minutos * 60 + 30) * 1000)) {
   $proc.Kill(); [Console]::Error.WriteLine("agy.ps1: o agy não respondeu em $Minutos min."); exit 124
 }
+$proc.WaitForExit()  # garante o fim das leituras assíncronas
+$saida = $tarefaSaida.Result
 $erro = $tarefaErro.Result
 
 # Saída JSON: {"status","response","denied_actions":[{"action","display_name"}], ...}

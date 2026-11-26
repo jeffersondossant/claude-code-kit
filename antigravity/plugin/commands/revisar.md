@@ -12,6 +12,7 @@ Peça ao Antigravity uma revisão. Foco indicado pelo usuário: $ARGUMENTS
    - Senão, use as mudanças não enviadas: `git status --short` e `git diff` (e `git diff --cached`). Se não houver mudanças, pergunte ao usuário o que revisar.
 3. Monte um prompt autossuficiente: objetivo das mudanças (resuma a partir desta conversa), o diff e os **caminhos completos** dos arquivos alterados (o agy lê arquivos pelo caminho, mas não lista pastas nem roda comandos em modo leitura). Peça: erros de lógica, riscos de segurança, casos não tratados e melhorias, **em ordem de gravidade**, cada um com arquivo e linha. Peça para não reescrever o código inteiro.
    Nunca inclua segredos (`.env`, tokens, chaves) no prompt.
+   Se o diff passar de ~25 mil caracteres, não cole: liste os caminhos completos dos arquivos (dentro da pasta do projeto; o agy não lê pastas temporárias) e peça para lê-los. No Windows, a linha de comando aceita no máximo ~32 mil caracteres.
 4. Rode pela ferramenta Bash (timeout 600000 ms), em modo leitura:
    ```bash
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1" -Modelo <modelo> -Modo leitura -Pasta "<pasta atual>" <<'PROMPT_AGY'

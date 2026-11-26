@@ -1,6 +1,6 @@
 {
   "name": "agy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Delega pesquisa, leitura extensa, revisão e tarefas ao Antigravity CLI (agy), usando a cota do Google AI Pro. Feito para Windows (PowerShell, sem WSL).",
   "author": {
     "name": "Jefferson"

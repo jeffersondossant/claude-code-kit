@@ -9,6 +9,7 @@ Envie a pergunta abaixo ao Antigravity e mostre a resposta ao usuário.
 Pergunta: $ARGUMENTS
 
 1. Se a pergunta começar com `--modelo <nome>`, use esse modelo e retire a opção do texto. Senão, use `hydrogen`.
+   Nunca inclua segredos (`.env`, tokens, chaves) no prompt.
 2. Rode pela ferramenta Bash (timeout 600000 ms), em modo leitura, na pasta atual do projeto:
    ```bash
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1" -Modelo <modelo> -Modo leitura -Pasta "<pasta atual>" <<'PROMPT_AGY'

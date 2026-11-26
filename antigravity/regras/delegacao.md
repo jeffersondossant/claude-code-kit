@@ -30,6 +30,7 @@ Os apelidos do Claude Code viram combos do OmniRoute, e o primeiro item de cada 
 
 Regras:
 - **Tarefa simples vai para Haiku**: ao chamar a ferramenta de subagente para busca, extração, classificação ou checagem, passe `model: haiku` (o padrão `sonnet` do `settings.json` continua valendo para os demais).
+- **Sessão fora do OmniRoute** (ex.: aba Code do app desktop do Claude, que vai direto à Anthropic): os apelidos `haiku` e `sonnet` dos subagentes viram nomes de combo que a Anthropic não conhece (erro 404 `model_not_found`), e isso vale também para o subagente `agy`, que roda em `haiku`. Nessa sessão, faça buscas e checagens direto (Glob, Grep, Read) em vez de usar subagentes, e chame o Antigravity pelos comandos `/agy:*` ou pela ponte no Bash.
 - **Nunca troque o modelo principal por conta própria** (e você não consegue: quem troca é o usuário, com `Shift+Tab` ou `/model`). **Sugira** a troca e espere a validação dele antes de seguir.
 - **Fim de etapa**, no rodapé (não em respostas curtas nem em toda resposta), acrescente uma linha:
   `**Próxima etapa:** <modelo> — <porquê em poucas palavras> · consumo <baixo|médio|alto> · <manter | trocar: comando>`
