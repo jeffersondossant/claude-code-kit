@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0 — 2026-11-26
+- Porte do `claude-code-setup` 0.8.0: **Gemini 4 Hydrogen** no plugin `agy` (0.1.0 → 0.2.0). Apelidos `hydrogen` (high, novo padrão), `hydrogen-max` e `hydrogen-rapido`; `flash` e `flash-rapido` continuam. Agente, comandos, `status.ps1` e `continuar.ps1` atualizados.
+- `antigravity/regras/delegacao.md`: nova seção "Escolha de modelo e economia de tokens" (escada Haiku → Sonnet → Opus → `agy`, subagentes simples com `model: haiku`, linha "Próxima etapa" no fim de cada etapa, troca do modelo principal só com a validação do usuário).
+
 ## 0.2.4 — 2026-11-23
 - Espelho público no GitHub criado em `https://github.com/jeffersondossant/claude-code-kit`, mantendo o GitLab como origem e os dois repositórios sincronizados.
 - `README.md`: instalação e marketplace do plugin agora mostram o GitHub como endereço principal e o GitLab como alternativa equivalente.

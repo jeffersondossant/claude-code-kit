@@ -1,12 +1,12 @@
 ---
 description: Entrega uma tarefa inteira ao Antigravity (agy), que pode alterar arquivos do projeto
-argument-hint: "[--modelo flash|sonnet|opus] <tarefa>"
+argument-hint: "[--modelo hydrogen|sonnet|opus] <tarefa>"
 allowed-tools: Bash(powershell.exe:*), Bash(git status:*), Bash(git diff:*)
 ---
 
 Delegue ao Antigravity a tarefa: $ARGUMENTS
 
-1. Se o texto começar com `--modelo <nome>`, use esse modelo. Senão, use `sonnet` para tarefas de código e `flash` para o resto.
+1. Se o texto começar com `--modelo <nome>`, use esse modelo. Senão, use `sonnet` para tarefas de código e `hydrogen` para o resto.
 2. Antes de rodar, rode `git status --short` e anote o estado, para comparar depois.
 3. Monte um prompt autossuficiente: objetivo, arquivos envolvidos, regras do projeto que importam (leia o `CLAUDE.md` do projeto, se houver), critério de pronto. Peça ao agy que **não faça commit nem push** e que termine listando os arquivos alterados.
 4. Rode pela ferramenta Bash (timeout 1800000 ms), em **modo edição**, com `-Minutos 30`:

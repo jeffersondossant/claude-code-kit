@@ -6,17 +6,17 @@
   porque o PowerShell 5.1 remove aspas dos argumentos passados a outros programas.
 
   Uso (pelo Bash do Claude Code):
-    powershell.exe -NoProfile -ExecutionPolicy Bypass -File agy.ps1 -Modelo flash -Modo leitura <<'EOF'
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File agy.ps1 -Modelo hydrogen -Modo leitura <<'EOF'
     texto do pedido
     EOF
 
-  -Modelo   flash (padrão) | flash-rapido | sonnet | opus | gpt | <id exato do "agy models">
+  -Modelo   hydrogen (padrão) | hydrogen-rapido | hydrogen-max | flash | flash-rapido | sonnet | opus | gpt | <id exato do "agy models">
   -Modo     leitura (padrão: só lê e pesquisa) | edicao (pode alterar arquivos)
   -Pasta    pasta de trabalho do agy (padrão: a atual)
   -Minutos  tempo máximo (padrão: 10)
 #>
 param(
-  [string]$Modelo = 'flash',
+  [string]$Modelo = 'hydrogen',
   [ValidateSet('leitura', 'edicao')][string]$Modo = 'leitura',
   [string]$Pasta = (Get-Location).Path,
   [int]$Minutos = 10,
@@ -29,6 +29,9 @@ $utf8 = New-Object Text.UTF8Encoding $false
 
 # Apelidos -> ids do "agy models" (confira com antigravity\scripts\verificar.ps1)
 $apelidos = @{
+  'hydrogen'        = 'gemini-4-hydrogen-high'
+  'hydrogen-rapido' = 'gemini-4-hydrogen-low'
+  'hydrogen-max'    = 'gemini-4-hydrogen-xhigh'
   'flash'        = 'gemini-3.8-flash-high'
   'flash-rapido' = 'gemini-3.8-flash-low'
   'sonnet'       = 'claude-sonnet-4-6'

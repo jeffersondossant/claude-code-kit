@@ -15,6 +15,27 @@ Regras:
 - Nunca envie ao `agy` senhas, tokens, chaves, `.env`, `settings.json` ou a pasta de dados do OmniRoute.
 - Revisão pelo `agy` ao final das tarefas: **só quando o usuário pedir** (`/agy:revisar` ou "pede pro agy revisar").
 
+## Escolha de modelo e economia de tokens
+
+Gaste a cota (sessão de 5 h e semanal) **sem perder qualidade**: use a potência necessária, nem mais, nem menos. Não superestime a complexidade para justificar um modelo maior, nem a subestime só para economizar.
+
+Os apelidos do Claude Code viram combos do OmniRoute, e o primeiro item de cada combo é o modelo da assinatura Pro (só cai para Codex, gratuitos e OpenAI paga quando a cota Pro acaba):
+
+| Nível | Tarefa | Onde roda | Gasto da cota Pro |
+|---|---|---|---|
+| Leve | busca de arquivo, extração, classificação, checagem simples | subagente com `model: haiku` (`claude-rapido-fallback`) | baixo |
+| Padrão | análise, correção, código, testes e auditorias de rotina | Sonnet (execução do `opusplan`, `claude-sonnet-fallback`) | médio |
+| Profundo | arquitetura, decisão estratégica, bug difícil, reflexão longa | Opus (modo Plano, ou `/model claude-pro-fallback`) | alto |
+| Cota do Google | pesquisa longa, leitura extensa, segunda opinião | `agy`: `hydrogen` (padrão), `hydrogen-max` (opinião difícil), `opus`/`sonnet` (família Claude 4.6) | nenhum |
+
+Regras:
+- **Tarefa simples vai para Haiku**: ao chamar a ferramenta de subagente para busca, extração, classificação ou checagem, passe `model: haiku` (o padrão `sonnet` do `settings.json` continua valendo para os demais).
+- **Nunca troque o modelo principal por conta própria** (e você não consegue: quem troca é o usuário, com `Shift+Tab` ou `/model`). **Sugira** a troca e espere a validação dele antes de seguir.
+- **Fim de etapa**, no rodapé (não em respostas curtas nem em toda resposta), acrescente uma linha:
+  `**Próxima etapa:** <modelo> — <porquê em poucas palavras> · consumo <baixo|médio|alto> · <manter | trocar: comando>`
+  e, se houver, uma otimização extra (ex.: `/compact` com a conversa longa, delegar leitura ao `agy`).
+- Só recomende modelos que existem na tabela acima ou em `agy models`.
+
 ## Rodapé "Comandos para agora"
 
 O usuário não decora os comandos. No **fim das respostas em que houver algo útil a sugerir**, acrescente um rodapé curto, **depois de tudo** (inclusive depois do resumo final), neste formato:

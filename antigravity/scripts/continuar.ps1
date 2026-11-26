@@ -6,7 +6,7 @@
               (ou o atalho Ctrl+Alt+Shift+A)
   No terminal: powershell -ExecutionPolicy Bypass -File <kit>\antigravity\scripts\continuar.ps1
 
-  -Modelo  opus (padrão) | sonnet | flash | gpt | <id exato do "agy models">
+  -Modelo  opus (padrão) | sonnet | hydrogen | gpt | <id exato do "agy models">
   -Pasta   pasta do projeto (padrão: a atual)
 
   O agy abre em modo interativo, já instruído a ler o CLAUDE.md, o ANDAMENTO.md e

@@ -1,12 +1,12 @@
 ---
 description: Pede ao Antigravity (agy) uma segunda opinião sobre as mudanças atuais ou um arquivo
-argument-hint: "[--modelo flash|sonnet|opus] [arquivo ou foco da revisão]"
+argument-hint: "[--modelo hydrogen|hydrogen-max|sonnet|opus] [arquivo ou foco da revisão]"
 allowed-tools: Bash(powershell.exe:*), Bash(git diff:*), Bash(git status:*)
 ---
 
 Peça ao Antigravity uma revisão. Foco indicado pelo usuário: $ARGUMENTS
 
-1. Se o texto começar com `--modelo <nome>`, use esse modelo; senão, `flash`.
+1. Se o texto começar com `--modelo <nome>`, use esse modelo; senão, `hydrogen`.
 2. Descubra o que revisar:
    - Se um arquivo foi indicado, revise esse arquivo.
    - Senão, use as mudanças não enviadas: `git status --short` e `git diff` (e `git diff --cached`). Se não houver mudanças, pergunte ao usuário o que revisar.

@@ -43,7 +43,7 @@ if ($ids.Count -gt 0) {
 }
 
 if (-not $SemTesteReal -and $ids.Count -gt 0) {
-  $r = 'Responda apenas a palavra PRONTO.' | & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ponte -Modelo flash-rapido -Minutos 2 2>&1 | Out-String
+  $r = 'Responda apenas a palavra PRONTO.' | & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ponte -Modelo hydrogen-rapido -Minutos 2 2>&1 | Out-String
   if ($r -match 'PRONTO') { Write-Ok 'resposta real do agy pela ponte do plugin' }
   else { Write-Falha "o agy não respondeu como esperado: $($r.Trim())" 'Veja a mensagem acima; tente "agy" no terminal.' }
 }

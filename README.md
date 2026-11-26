@@ -65,7 +65,11 @@ Comandos no chat:
 - `/agy:delegar`: entrega a tarefa inteira; altera arquivos, sem commit;
 - `/agy:status`: confere instalação, login e resposta.
 
-Todos aceitam `--modelo flash|sonnet|opus|gpt`.
+Todos aceitam `--modelo hydrogen|sonnet|opus|gpt`.
+
+Apelidos de modelo (confira com `agy models`): `hydrogen` (padrão, Gemini 4 Hydrogen high), `hydrogen-max` (xhigh), `hydrogen-rapido` (low, só perguntas simples), `sonnet` e `opus` (Claude 4.6 pela cota do Google), `gpt` (GPT-OSS 120B) e, enquanto existirem, `flash`/`flash-rapido` (Gemini 3.8).
+
+**Escolha de modelo e economia de tokens:** o bloco de regras instalado no `CLAUDE.md` global manda usar o modelo de menor custo que garanta a qualidade (Haiku em subagentes para tarefas simples, Sonnet na rotina, Opus em decisões difíceis, e o `agy` com a cota do Google para pesquisa e leitura extensa). No fim de cada etapa, o Claude indica o modelo da próxima, o porquê, o consumo estimado e se vale manter ou trocar, e espera a sua validação antes de pedir qualquer troca.
 
 ## Configuração
 
