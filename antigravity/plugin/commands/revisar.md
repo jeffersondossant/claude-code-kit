@@ -1,7 +1,10 @@
 ---
 description: Pede ao Antigravity (agy) uma segunda opinião sobre as mudanças atuais ou um arquivo
 argument-hint: "[--modelo hydrogen|hydrogen-max|sonnet|opus] [arquivo ou foco da revisão]"
-allowed-tools: 'Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1":*)', Bash(git diff:*), Bash(git status:*)
+allowed-tools:
+  - 'Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1":*)'
+  - Bash(git diff:*)
+  - Bash(git status:*)
 ---
 
 Peça ao Antigravity uma revisão. Foco indicado pelo usuário: $ARGUMENTS

@@ -65,7 +65,7 @@ if (-not $prompt) { [Console]::Error.WriteLine('agy.ps1: prompt vazio (envie pel
 
 $agy = (Get-Command agy -ErrorAction SilentlyContinue).Source
 if (-not $agy) { $agy = Join-Path $env:LOCALAPPDATA 'agy\bin\agy.exe' }
-if (-not (Test-Path -LiteralPath $agy)) { [Console]::Error.WriteLine('agy.ps1: Antigravity CLI (agy) não encontrado. Rode antigravity\scripts\verificar.ps1.'); exit 3 }
+if (-not (Test-Path -LiteralPath $agy)) { [Console]::Error.WriteLine('agy.ps1: Antigravity CLI (agy) não encontrado. Rode /agy:status no Claude Code.'); exit 3 }
 
 # Regras de aspas do Windows (CommandLineToArgvW): barras antes de aspas são dobradas
 function ConvertTo-ArgumentoWindows([string]$a) {
@@ -94,13 +94,18 @@ if ($Modo -eq 'leitura') {
 $argumentos = @('--model', $idModelo, '--mode', $modoAgy, '--output-format', 'json', '--print-timeout', "$($min * 60)s")
 # A pasta base do ambiente pode ter um CLAUDE.md geral, fora da pasta do projeto: sem --add-dir
 # o agy não pode lê-lo. O instalador grava a pasta base na variável de usuário CLAUDE_KIT_PASTA_BASE.
-# Só no modo leitura: no modo edição isso daria ao agy acesso de escrita aos projetos vizinhos.
+# Só no modo leitura (no modo edição daria ao agy acesso de escrita aos projetos vizinhos) e só se a
+# pasta base tiver mesmo um CLAUDE.md: ela também guarda os dados do OmniRoute, que o agy não precisa ver.
 $raizAmbiente = $env:CLAUDE_KIT_PASTA_BASE
 if (-not $raizAmbiente) { $raizAmbiente = [Environment]::GetEnvironmentVariable('CLAUDE_KIT_PASTA_BASE', 'User') }
-$pastaCheia = [IO.Path]::GetFullPath($Pasta)
+$pastaCheia = (Resolve-Path -LiteralPath $Pasta).Path
 if ($Modo -eq 'leitura' -and $raizAmbiente) {
   $raizAmbiente = $raizAmbiente.TrimEnd('\')
-  if ($pastaCheia.StartsWith($raizAmbiente + '\', [StringComparison]::OrdinalIgnoreCase)) { $argumentos += @('--add-dir', $raizAmbiente) }
+  $prefixo = $raizAmbiente + '\'
+  if ($raizAmbiente -match '^[A-Za-z]:$') { $raizAmbiente = $prefixo }  # raiz de unidade: 'D:' sozinho seria a pasta atual da unidade
+  if ($pastaCheia.StartsWith($prefixo, [StringComparison]::OrdinalIgnoreCase) -and (Test-Path -LiteralPath (Join-Path $raizAmbiente 'CLAUDE.md'))) {
+    $argumentos += @('--add-dir', $raizAmbiente)
+  }
 }
 $argumentos += "-p=$prompt"
 $psi = New-Object Diagnostics.ProcessStartInfo
@@ -147,6 +152,10 @@ if ($json) {
   }
   if (-not $json.response) {
     [Console]::Error.WriteLine("agy.ps1: o agy terminou sem texto de resposta (status $($json.status)).")
+    # Mostra o detalhe do erro (ex.: 429 de cota), para quem chamou decidir trocar de modelo
+    $detalhe = if ($json.error) { $json.error | ConvertTo-Json -Depth 5 -Compress } else { ([string]$saida).Trim() }
+    if ($detalhe) { [Console]::Error.WriteLine('agy.ps1: detalhe: ' + $(if ($detalhe.Length -gt 2000) { $detalhe.Substring(0, 2000) + '...' } else { $detalhe })) }
+    if ($erro -and $proc.ExitCode -eq 0) { [Console]::Error.WriteLine($erro.Trim()) }
     if ($proc.ExitCode -eq 0) { exit 4 }
   }
 } else {

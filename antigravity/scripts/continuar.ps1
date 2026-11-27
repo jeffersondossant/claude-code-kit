@@ -41,8 +41,10 @@ $andamento = Join-Path $pastaResolvida 'ANDAMENTO.md'
 
 # Pasta base do ambiente (config.local.psd1). Ela pode ter um CLAUDE.md geral, fora da pasta do projeto.
 . (Join-Path $PSScriptRoot '..\..\lib\config.ps1')
-$raizAmbiente = $Kit.PastaBase
-$dentroDaBase = $pastaResolvida.StartsWith($raizAmbiente + '\', [StringComparison]::OrdinalIgnoreCase)
+$raizAmbiente = ([string]$Kit.PastaBase).TrimEnd('\')
+$prefixoBase = $raizAmbiente + '\'
+if ($raizAmbiente -match '^[A-Za-z]:$') { $raizAmbiente = $prefixoBase }  # raiz de unidade
+$dentroDaBase = $raizAmbiente -and $pastaResolvida.StartsWith($prefixoBase, [StringComparison]::OrdinalIgnoreCase)
 $claudeBase = Join-Path $raizAmbiente 'CLAUDE.md'
 $temClaudeBase = $dentroDaBase -and (Test-Path -LiteralPath $claudeBase)
 
@@ -82,9 +84,10 @@ $prompt = 'Estou continuando um trabalho que o Claude Code começou e não conse
   'Termine este resumo, e cada etapa concluída nesta conversa (não as respostas curtas), com a linha Próxima etapa ' +
   'da seção Escolha de modelo das suas regras globais.'
 
-# Sem --add-dir o agy não pode ler o CLAUDE.md da pasta base (fica fora da pasta do projeto)
+# Sem --add-dir o agy não pode ler o CLAUDE.md da pasta base (fica fora da pasta do projeto).
+# Só se ele existir: a pasta base também guarda os dados do OmniRoute.
 $extra = @()
-if ($dentroDaBase) { $extra = @('--add-dir', $raizAmbiente) }
+if ($temClaudeBase) { $extra = @('--add-dir', $raizAmbiente) }
 
 & $agy --model $idModelo @extra "-i=$prompt"
 exit $LASTEXITCODE

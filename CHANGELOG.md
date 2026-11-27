@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1 — 2026-11-26
+- Correções da revisão do Antigravity (`hydrogen`) sobre a 0.4.0. Plugin `agy` 0.3.0 → 0.3.1.
+- **Comandos:** o `allowed-tools` do `/agy:revisar` e do `/agy:delegar` virou lista YAML. A linha `'Bash(...)', Bash(git diff:*), ...` era YAML inválido (texto depois da aspa que fecha) e a ponte pedia aprovação (achado da revisão e confirmado com `claude -p`: antes 1 negação, agora nenhuma).
+- `agy.ps1`:
+  - quando o `agy` termina sem resposta, mostra o detalhe do erro (ex.: 429 de cota), para o `/agy:delegar` poder trocar de modelo;
+  - o `--add-dir` da pasta base só entra se ela tiver um `CLAUDE.md` (a pasta também guarda os dados do OmniRoute); trata pasta base na raiz de uma unidade (`D:\`); a pasta do projeto é resolvida com `Resolve-Path`;
+  - sem o `agy`, manda rodar `/agy:status` (o `verificar.ps1` não existe quando só o plugin é instalado). O agente faz o mesmo.
+- `continuar.ps1`: pasta base sem `\` final e na raiz de uma unidade; `--add-dir` só com o `CLAUDE.md` da base.
+
 ## 0.4.0 — 2026-11-26
 - Porte do `claude-code-setup` 0.7.7 e 0.8.2 a 0.8.8. Plugin `agy` 0.2.1 → 0.3.0.
 - **Ponte `agy.ps1`:**

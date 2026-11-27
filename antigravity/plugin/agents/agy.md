@@ -44,7 +44,7 @@ O agy não vê esta conversa. Escreva um pedido autossuficiente, em português, 
 - Devolva a resposta do agy, deixando claro que ela veio do Antigravity e qual modelo foi usado.
 - Se for longa, resuma mantendo fatos, caminhos, comandos e conclusões. Não invente nada que o agy não disse.
 - No modo `edicao`, liste os arquivos que o agy disse ter alterado e confira com `git status` ou lendo os arquivos.
-- Se o script falhar (código diferente de 0), devolva a mensagem de erro e sugira rodar `antigravity\scripts\verificar.ps1`. Não tente contornar.
+- Se o script falhar (código diferente de 0), devolva a mensagem de erro e sugira rodar `/agy:status`. Não tente contornar.
 
 ## Nunca
 - Nunca passe ao agy senhas, tokens, chaves de API nem o conteúdo de arquivos `.env`, `settings.json` ou da pasta de dados do OmniRoute.

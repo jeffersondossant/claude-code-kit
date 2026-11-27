@@ -1,7 +1,10 @@
 ---
 description: Entrega uma tarefa inteira ao Antigravity (agy), que pode alterar arquivos do projeto
 argument-hint: "[--modelo hydrogen|sonnet|opus] <tarefa>"
-allowed-tools: 'Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1":*)', Bash(git status:*), Bash(git diff:*)
+allowed-tools:
+  - 'Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1":*)'
+  - Bash(git status:*)
+  - Bash(git diff:*)
 ---
 
 Delegue ao Antigravity a tarefa: $ARGUMENTS
