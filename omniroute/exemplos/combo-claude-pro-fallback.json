@@ -1,13 +1,12 @@
 {
-  "_comentario": "Exemplo do combo de fallback usado com o Claude Code (testado em 2026-11-21, todos os modelos passaram numa tarefa real com ferramentas). Ordem: assinaturas -> gratuitos -> pagos. Ajuste aos SEUS provedores conectados. Critério para entrar: aguentar ~60 mil tokens de entrada por requisição e tool calling (Groq gratuito, por exemplo, NÃO aguenta). Crie em Combinações -> Criar Combo, estratégia priority; modelos fora do catálogo exigem 'Importar de /models' na página do provedor.",
+  "_comentario": "Exemplo do combo de fallback usado com o Claude Code (testado em 2026-11-21, todos os modelos passaram numa tarefa real com ferramentas). Ordem: assinaturas -> gratuitos -> pagos. Ajuste aos SEUS provedores conectados. Critério para entrar: aguentar ~60 mil tokens de entrada por requisição e tool calling (Groq gratuito, por exemplo, NÃO aguenta). Crie em Combinações -> Criar Combo, estratégia priority; modelos fora do catálogo exigem 'Importar de /models' na página do provedor. O OpenRouter saiu em 2026-11-26: tem modelos pagos misturados aos gratuitos, e um teste em massa no painel gerou cobrança mesmo com o combo só com :free.",
   "name": "claude-pro-fallback",
   "strategy": "priority",
-  "description": "Claude como principal; fallback para assinaturas (Codex), depois modelos gratuitos (NVIDIA NIM, Gemini, OpenRouter :free) e, por último, a OpenAI paga.",
+  "description": "Claude como principal; fallback para assinaturas (Codex), depois modelos gratuitos (NVIDIA NIM, Gemini) e, por último, a OpenAI paga.",
   "models": [
     { "model": "cc/claude-opus-5-5", "providerId": "claude" },
     { "model": "cc/claude-sonnet-5-5", "providerId": "claude" },
     { "model": "cc/claude-sonnet-4-5-20250929", "providerId": "claude" },
-    { "model": "cc/claude-haiku-4-5-20251001", "providerId": "claude" },
     { "model": "cx/gpt-5.6-terra", "providerId": "codex" },
     { "model": "cx/gpt-6-luna", "providerId": "codex" },
     { "model": "nvidia/moonshotai/kimi-k3.1-pro", "providerId": "nvidia" },
@@ -16,8 +15,6 @@
     { "model": "nvidia/minimaxai/minimax-m3.1-flash", "providerId": "nvidia" },
     { "model": "gemini/gemini-3.8-flash", "providerId": "gemini" },
     { "model": "gemini/gemini-3-flash-preview", "providerId": "gemini" },
-    { "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free", "providerId": "openrouter" },
-    { "model": "openrouter/google/gemma-4-31b-it:free", "providerId": "openrouter" },
     { "model": "gemini/gemini-3.1-flash-lite", "providerId": "gemini" },
     { "model": "openai/gpt-5.4", "providerId": "openai" },
     { "model": "openai/gpt-5.4-mini", "providerId": "openai" }

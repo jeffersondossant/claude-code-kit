@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 — 2026-11-26
+- Porte do `claude-code-setup` 0.7.7 e 0.8.2 a 0.8.8. Plugin `agy` 0.2.1 → 0.3.0.
+- **Ponte `agy.ps1`:**
+  - valida `-Minutos` (inteiro de 1 a 60, padrão 9), `-Pasta` (precisa existir), `-ArquivoPrompt` e `-Modelo`, com mensagens claras;
+  - espera até `Minutos × 60 + 20` s, para caber nos 600 s da ferramenta Bash em primeiro plano;
+  - no tempo esgotado, `taskkill /T` encerra também os processos filhos;
+  - o `--add-dir` da pasta base só entra no modo leitura (no modo edição daria escrita aos projetos vizinhos);
+  - no modo edição, o prompt avisa que não há terminal nem leitura fora da pasta (antes o agy tentava, a ação era negada e ele terminava sem resposta).
+- **Comandos `/agy:*`:** o `allowed-tools` libera só a ponte (`${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1`) ou o `status.ps1`, e não mais qualquer `powershell.exe`. Testado com `claude -p` só com o plugin do kit: `/agy:status` e `/agy:perguntar` rodaram sem pedir permissão. `/agy:pesquisar` e `/agy:delegar` rodam em segundo plano (pediam mais que os 10 min da ferramenta). `/agy:delegar`: com erro 429 em `sonnet`/`opus`, refazer com `hydrogen`.
+- **Continuar no Antigravity:** a tarefa do VS Code (Ctrl+Alt+Shift+A) mostra um menu de modelo. A opção "sugerido" lê a última linha `**Próxima etapa:** <apelido>` do `ANDAMENTO.md` (sem ela, `opus`). `continuar.ps1` ganha `-Modelo sugerido` e `-ApenasModelo` (teste).
+- `regras/gemini-global.md`: seção "Escolha de modelo" (tabela de apelidos e formato da linha Próxima etapa) e exceção para pedidos vindos da ponte (pulam a rotina de início e o `ANDAMENTO.md`, que ali seriam negados).
+- `omniroute/claude-settings.exemplo.json`: `availableModels` (opus, sonnet, `claude-sonnet-5-5`, haiku e os 3 combos), que esconde e bloqueia o Fable; sai o `ANTHROPIC_DEFAULT_FABLE_MODEL`.
+- **Combos de exemplo:** sem o OpenRouter (mistura modelos pagos aos gratuitos; um teste em massa no painel gerou cobrança) e sem o Haiku 4.5. `claude-rapido-fallback` começa pelo Haiku 5.5. Ficam 14, 13 e 6 modelos. README e tutorial atualizados.
+
 ## 0.3.1 — 2026-11-26
 - Correções da revisão do Antigravity (Gemini 4 Hydrogen) sobre a 0.3.0. Plugin `agy` 0.2.0 → 0.2.1.
 - `agy.ps1`: lê a saída do `agy` de forma assíncrona, então o tempo limite (`-Minutos`) passa a valer mesmo se o `agy` travar; pedido acima de 32 mil caracteres (limite da linha de comando do Windows) dá mensagem clara em vez de exceção.

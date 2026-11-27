@@ -117,10 +117,25 @@ if (-not $SemVSCode) {
       detail = 'Abre o agy neste projeto, lendo CLAUDE.md, ANDAMENTO.md e git status (claude-code-kit)'
       type = 'process'
       command = 'powershell.exe'
-      args = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $script, '-Pasta', '${workspaceFolder}')
+      args = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $script, '-Pasta', '${workspaceFolder}', '-Modelo', '${input:modeloAgy}')
       options = [ordered]@{ cwd = '${workspaceFolder}' }
       presentation = [ordered]@{ reveal = 'always'; focus = $true; panel = 'dedicated'; clear = $true }
       problemMatcher = @()
+    }
+    # Menu de escolha do modelo, mostrado pelo VS Code antes de abrir o agy (Esc cancela a tarefa)
+    $entradaModelo = [ordered]@{
+      id = 'modeloAgy'
+      type = 'pickString'
+      description = 'Com qual modelo continuar no Antigravity? (Esc cancela)'
+      default = 'sugerido'
+      options = @(
+        [ordered]@{ label = 'sugerido no ANDAMENTO.md (linha Próxima etapa; sem ela, opus)'; value = 'sugerido' }
+        [ordered]@{ label = 'hydrogen-rapido · leve: pergunta simples, edição curta · consumo baixo'; value = 'hydrogen-rapido' }
+        [ordered]@{ label = 'hydrogen · padrão: pesquisa, leitura, revisão · consumo médio'; value = 'hydrogen' }
+        [ordered]@{ label = 'hydrogen-max · profundo: decisão difícil · consumo alto'; value = 'hydrogen-max' }
+        [ordered]@{ label = 'sonnet · código (Claude 4.6 pela cota do Google) · consumo alto'; value = 'sonnet' }
+        [ordered]@{ label = 'opus · tarefa difícil do começo ao fim · consumo alto'; value = 'opus' }
+      )
     }
     $tasksJson = Join-Path $pastaUser 'tasks.json'
     $ok = $true
@@ -131,11 +146,13 @@ if (-not $SemVSCode) {
       else {
         $lista = @($cfg.tasks | Where-Object { $_ -and $_.label -ne $nomeTarefa }) + [pscustomobject]$tarefa
         $cfg | Add-Member -NotePropertyName tasks -NotePropertyValue $lista -Force
+        $entradas = @($cfg.inputs | Where-Object { $_ -and $_.id -ne 'modeloAgy' }) + [pscustomobject]$entradaModelo
+        $cfg | Add-Member -NotePropertyName inputs -NotePropertyValue $entradas -Force
         Copy-Seguranca $tasksJson
         [IO.File]::WriteAllText($tasksJson, ($cfg | ConvertTo-Json -Depth 10), $utf8)
       }
     } else {
-      [IO.File]::WriteAllText($tasksJson, ([ordered]@{ version = '2.0.0'; tasks = @([pscustomobject]$tarefa) } | ConvertTo-Json -Depth 10), $utf8)
+      [IO.File]::WriteAllText($tasksJson, ([ordered]@{ version = '2.0.0'; tasks = @([pscustomobject]$tarefa); inputs = @([pscustomobject]$entradaModelo) } | ConvertTo-Json -Depth 10), $utf8)
     }
     if ($ok) { Write-Ok "Tarefa '$nomeTarefa' em $tasksJson" }
 

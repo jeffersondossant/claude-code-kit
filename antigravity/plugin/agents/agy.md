@@ -20,8 +20,9 @@ PROMPT_AGY
 - `-Modelo`: `hydrogen` (padrão, Gemini 4), `hydrogen-rapido`, `hydrogen-max`, `sonnet` ou `opus` (Claude pela cota do Google), `gpt`, `flash`/`flash-rapido` (Gemini 3.8, ainda disponíveis, mas "Leaving Soon"). Veja "Escolha do modelo".
 - `-Modo`: `leitura` (padrão: só lê, pesquisa e responde) ou `edicao` (pode criar e alterar arquivos). Use `edicao` **somente** se o pedido disser explicitamente que o agy pode alterar arquivos.
 - `-Pasta`: a pasta do projeto em que o trabalho acontece (caminho do Windows).
-- `-Minutos`: aumente (até 30) para tarefas longas. O padrão é 10.
-- Rode o comando com `timeout` de 600000 ms na ferramenta Bash (ou mais, se aumentar `-Minutos`).
+- `-Minutos`: de 1 a 60; o padrão é 9. A ponte espera até `Minutos × 60 + 20` segundos.
+- Até 9 minutos, rode o comando com `timeout` de 600000 ms na ferramenta Bash (o máximo em primeiro plano). Com `-Minutos` acima de 9, rode em segundo plano (`run_in_background: true`) e espere o aviso de que terminou.
+- `-Pasta` precisa existir. No modo `edicao` o agy só enxerga a pasta do projeto: inclua no pedido as regras do `CLAUDE.md` geral que importarem.
 
 ## Como montar o prompt para o agy
 

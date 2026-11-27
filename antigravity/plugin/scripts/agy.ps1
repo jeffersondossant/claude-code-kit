@@ -12,20 +12,37 @@
 
   -Modelo   hydrogen (padrão) | hydrogen-rapido | hydrogen-max | flash | flash-rapido | sonnet | opus | gpt | <id exato do "agy models">
   -Modo     leitura (padrão: só lê e pesquisa) | edicao (pode alterar arquivos)
-  -Pasta    pasta de trabalho do agy (padrão: a atual)
-  -Minutos  tempo máximo (padrão: 10)
+  -Pasta    pasta de trabalho do agy (padrão: a atual; precisa existir)
+  -Minutos  tempo máximo, de 1 a 60 (padrão: 9). A ponte espera até Minutos*60 + 20 s.
+            A ferramenta Bash do Claude Code espera no máximo 600 s em primeiro plano:
+            com mais de 9 minutos, rode o comando em segundo plano (run_in_background).
 #>
 param(
   [string]$Modelo = 'hydrogen',
   [ValidateSet('leitura', 'edicao')][string]$Modo = 'leitura',
   [string]$Pasta = (Get-Location).Path,
-  [int]$Minutos = 10,
+  [string]$Minutos = '9',
   [string]$ArquivoPrompt
 )
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object Text.UTF8Encoding $false
 [Console]::OutputEncoding = $utf8
 [Console]::InputEncoding = $utf8
+
+# Validação dos parâmetros, com mensagens claras (em vez de exceções do .NET)
+if ($Minutos -notmatch '^\d{1,3}$' -or [int]$Minutos -lt 1 -or [int]$Minutos -gt 60) {
+  [Console]::Error.WriteLine("agy.ps1: -Minutos deve ser um número inteiro de 1 a 60 (recebido: '$Minutos')."); exit 2
+}
+$min = [int]$Minutos
+if ([string]::IsNullOrWhiteSpace($Pasta) -or -not (Test-Path -LiteralPath $Pasta -PathType Container)) {
+  [Console]::Error.WriteLine("agy.ps1: a pasta de trabalho não existe: '$Pasta' (-Pasta)."); exit 2
+}
+if ($ArquivoPrompt -and -not (Test-Path -LiteralPath $ArquivoPrompt -PathType Leaf)) {
+  [Console]::Error.WriteLine("agy.ps1: arquivo do prompt não encontrado: '$ArquivoPrompt' (-ArquivoPrompt)."); exit 2
+}
+if ([string]::IsNullOrWhiteSpace($Modelo) -or $Modelo.StartsWith('-')) {
+  [Console]::Error.WriteLine("agy.ps1: modelo inválido: '$Modelo' (-Modelo)."); exit 2
+}
 
 # Apelidos -> ids do "agy models" (confira com antigravity\scripts\verificar.ps1)
 $apelidos = @{
@@ -69,15 +86,19 @@ function ConvertTo-ArgumentoWindows([string]$a) {
 # as ferramentas de leitura/busca de arquivos e a pesquisa na web.
 if ($Modo -eq 'leitura') {
   $prompt = "[Modo somente leitura: NÃO use run_command/terminal (será negado) nem crie ou altere arquivos. Leia arquivos com read_file, pelos caminhos informados no pedido; você não consegue listar pastas, então se precisar de um arquivo que não foi informado, diga qual. Para informações externas, use search_web. Responda direto, sem plano de implementação. Se não conseguir verificar algo, diga claramente que não conseguiu: nunca invente nomes de arquivos, números ou fatos.]`n`n$prompt"
+} else {
+  # No modo edição o terminal também é negado (ninguém aprova), e o agy desiste sem resposta se tentar.
+  $prompt = "[Modo edição não interativo: você pode ler e alterar arquivos do projeto, mas NÃO use run_command/terminal (será negado e a tarefa termina sem resposta). Não rode testes, git, bash -n nem verificadores: trabalhe lendo e editando arquivos, pelos caminhos informados no pedido, e só dentro da pasta do projeto (fora dela a leitura também é negada). O que só desse para conferir no terminal, liste no fim como a conferir. Termine sempre com uma resposta em texto.]`n`n$prompt"
 }
 
-$argumentos = @('--model', $idModelo, '--mode', $modoAgy, '--output-format', 'json', '--print-timeout', "$($Minutos * 60)s")
+$argumentos = @('--model', $idModelo, '--mode', $modoAgy, '--output-format', 'json', '--print-timeout', "$($min * 60)s")
 # A pasta base do ambiente pode ter um CLAUDE.md geral, fora da pasta do projeto: sem --add-dir
 # o agy não pode lê-lo. O instalador grava a pasta base na variável de usuário CLAUDE_KIT_PASTA_BASE.
+# Só no modo leitura: no modo edição isso daria ao agy acesso de escrita aos projetos vizinhos.
 $raizAmbiente = $env:CLAUDE_KIT_PASTA_BASE
 if (-not $raizAmbiente) { $raizAmbiente = [Environment]::GetEnvironmentVariable('CLAUDE_KIT_PASTA_BASE', 'User') }
 $pastaCheia = [IO.Path]::GetFullPath($Pasta)
-if ($raizAmbiente) {
+if ($Modo -eq 'leitura' -and $raizAmbiente) {
   $raizAmbiente = $raizAmbiente.TrimEnd('\')
   if ($pastaCheia.StartsWith($raizAmbiente + '\', [StringComparison]::OrdinalIgnoreCase)) { $argumentos += @('--add-dir', $raizAmbiente) }
 }
@@ -104,8 +125,11 @@ $proc = [Diagnostics.Process]::Start($psi)
 # antes do WaitForExit, e o tempo limite nunca dispararia.
 $tarefaErro = $proc.StandardError.ReadToEndAsync()
 $tarefaSaida = $proc.StandardOutput.ReadToEndAsync()
-if (-not $proc.WaitForExit(($Minutos * 60 + 30) * 1000)) {
-  $proc.Kill(); [Console]::Error.WriteLine("agy.ps1: o agy não respondeu em $Minutos min."); exit 124
+if (-not $proc.WaitForExit(($min * 60 + 20) * 1000)) {
+  # taskkill /T encerra também os processos filhos do agy (Kill() do .NET 4 mata só o principal)
+  & taskkill.exe /PID $proc.Id /T /F *> $null
+  if (-not $proc.HasExited) { $proc.Kill() }
+  [Console]::Error.WriteLine("agy.ps1: o agy não respondeu em $min min."); exit 124
 }
 $proc.WaitForExit()  # garante o fim das leituras assíncronas
 $saida = $tarefaSaida.Result
@@ -118,7 +142,7 @@ if ($json) {
   if ($json.response) { [Console]::Out.Write(([string]$json.response).TrimEnd() + "`n") }
   $negadas = @($json.denied_actions | Where-Object { $_ } | ForEach-Object { if ($_.display_name) { $_.display_name } else { $_.action } }) | Select-Object -Unique
   if ($negadas) {
-    $dica = if ($Modo -eq 'leitura') { 'No modo leitura o agy não pode usar o terminal nem alterar arquivos. Reformule pedindo leitura/busca de arquivos ou pesquisa na web; se a tarefa exigir terminal ou edição, use -Modo edicao (só com autorização do usuário).' } else { 'O agy não pode executar comandos de terminal no modo não interativo. Peça para fazer a tarefa só com edição de arquivos, ou rode o comando você mesmo.' }
+    $dica = if ($Modo -eq 'leitura') { 'No modo leitura o agy não pode usar o terminal nem alterar arquivos. Reformule pedindo leitura/busca de arquivos ou pesquisa na web; se a tarefa exigir terminal ou edição, use -Modo edicao (só com autorização do usuário).' } else { 'No modo edição não interativo o agy não usa o terminal e só lê e grava dentro da pasta do projeto. Informe só arquivos da pasta, ou rode o comando você mesmo.' }
     [Console]::Error.WriteLine("agy.ps1: o agy tentou usar ($($negadas -join ', ')) e a ação foi negada. $dica")
   }
   if (-not $json.response) {

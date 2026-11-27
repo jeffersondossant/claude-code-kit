@@ -1,16 +1,14 @@
 {
-  "_comentario": "Combo das tarefas de fundo (papel haiku: título da conversa, resumos, subagentes haiku; testado em 2026-11-23). Haiku e gratuitos rápidos, sem Codex e sem pagos.",
+  "_comentario": "Combo das tarefas de fundo (papel haiku: título da conversa, resumos, subagentes haiku; testado em 2026-11-23). Haiku 5.5 (acrescente claude-haiku-5-5 do provedor Claude Code; fica gravado como claude/claude-haiku-5-5) e gratuitos rápidos, sem Codex e sem pagos.",
   "name": "claude-rapido-fallback",
   "strategy": "priority",
-  "description": "Haiku 4.5 e gratuitos rápidos; sem modelos pagos.",
+  "description": "Haiku 5.5 e gratuitos rápidos; sem modelos pagos.",
   "models": [
-    { "model": "cc/claude-haiku-4-5-20251001", "providerId": "claude" },
+    { "model": "claude/claude-haiku-5-5", "providerId": "claude" },
     { "model": "nvidia/z-ai/glm-5.3-flash", "providerId": "nvidia" },
     { "model": "nvidia/minimaxai/minimax-m3.1-flash", "providerId": "nvidia" },
     { "model": "gemini/gemini-3.8-flash", "providerId": "gemini" },
     { "model": "gemini/gemini-3-flash-preview", "providerId": "gemini" },
-    { "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free", "providerId": "openrouter" },
-    { "model": "openrouter/google/gemma-4-31b-it:free", "providerId": "openrouter" },
     { "model": "gemini/gemini-3.1-flash-lite", "providerId": "gemini" }
   ]
 }

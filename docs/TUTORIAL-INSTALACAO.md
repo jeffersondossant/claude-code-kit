@@ -176,7 +176,7 @@ Clique em **Testar** em cada um. Os que funcionarem aparecem como *conectado*.
 - **ordem recomendada:** assinaturas (Claude, depois Codex) → **gratuitos** → pagos por último. Gratuitos testados em 21/11/2026:
   - **NVIDIA NIM** (build.nvidia.com, sem cartão): Kimi K3.1 Pro, Nemotron 3 Ultra, GLM 5.3 Flash e MiniMax M3.1 Flash;
   - **Gemini** (AI Studio);
-  - **OpenRouter** (só modelos `:free`; 50 requisições/dia na conta gratuita);
+  - **OpenRouter: não recomendado.** Ele mistura modelos pagos aos gratuitos (`:free`) no mesmo catálogo, e um teste em massa no painel do OmniRoute chamou modelos pagos e gerou cobrança, mesmo com o combo só com `:free`. Saiu dos exemplos em 26/11/2026;
 - **critério para um gratuito entrar no combo:** aguentar ~60 mil tokens de entrada por requisição e a chamada de ferramentas. O Groq gratuito (6–12 mil tokens por minuto) não aguenta; Mistral/Codestral não tem API gratuita. Teste cada modelo com uma tarefa real antes (`claude -p --model <provedor/modelo>`);
 - **OpenAI paga:** use créditos pré-pagos com a **recarga automática desligada**; esse é o teto de gasto. O orçamento do OmniRoute vale para a chave inteira e, ao estourar, bloqueia todos os modelos.
 
@@ -184,7 +184,8 @@ Clique em **Testar** em cada um. Os que funcionarem aparecem como *conectado*.
 
 **3C.3a Combos por papel** (para o `opusplan` da etapa 4, que poupa o Opus). Em **Combinações**, use **Duplicar** no `claude-pro-fallback` e **Editar** na cópia:
 - **`claude-sonnet-fallback`**: remova o Opus. O Sonnet fica em primeiro. Atende o trabalho fora do modo Plano e os subagentes.
-- **`claude-rapido-fallback`**: deixe só o Haiku e os gratuitos rápidos (por exemplo GLM Flash, MiniMax Flash, Gemini Flash, OpenRouter `:free`), sem pagos. Atende as tarefas de fundo, como o título da conversa.
+- **`claude-rapido-fallback`**: acrescente o `claude-haiku-5-5` do provedor Claude Code (fica gravado como `claude/claude-haiku-5-5`) e suba-o para o 1º lugar; deixe só ele e os gratuitos rápidos (por exemplo GLM Flash, MiniMax Flash e os Gemini Flash), sem Codex e sem pagos. Atende as tarefas de fundo, como o título da conversa.
+- O Haiku 4.5 não entra em nenhum combo: no `claude-rapido-fallback` o Haiku 5.5 o substitui, e nos outros dois ele só atrasaria a queda para o próximo provedor.
 
 Exemplos em [`omniroute/exemplos/`](../omniroute/exemplos/).
 
@@ -230,6 +231,7 @@ notepad "$env:USERPROFILE\.claude\settings.json"
 | `ANTHROPIC_DEFAULT_SONNET_MODEL` | `claude-sonnet-fallback` | execução e dia a dia, com fallback |
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | `claude-rapido-fallback` | tarefas de fundo e subagentes `haiku` |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | `sonnet` | subagentes não herdam o Opus do modo Plano |
+| `availableModels` | `opus`, `sonnet`, `claude-sonnet-5-5`, `haiku` e os 3 combos | **esconde e bloqueia o Fable** (caro e sem fallback) no seletor do VS Code e no terminal; quem pedir `fable` cai no `claude-pro-fallback`. O `claude-sonnet-5-5` está na lista porque o apelido `sonnet` não cobre esse nome, que o app desktop usa. Ao criar um combo novo, acrescente o nome aqui, senão o Claude Code o recusa. Não defina `ANTHROPIC_DEFAULT_FABLE_MODEL`. |
 | `cleanupPeriodDays` | `36500` | **não apagar o histórico de conversas** (o padrão apaga após 30 dias). Não use `0`, que em algumas versões significa não guardar nada. |
 
 Reinicie o VS Code. Se o seletor de modelos mostrar outro modelo, digite `/model opusplan` no chat. Para uma tarefa difícil inteira no Opus, use `/model claude-pro-fallback`. O aviso "doesn't recognize the model" é inofensivo.
@@ -306,7 +308,7 @@ As ferramentas de escrita (trocar combo, limpar cache) ficam **bloqueadas** pela
 
 ✅ `.\antigravity\scripts\verificar.ps1` termina em **"Tudo certo."**, e `/agy:perguntar qual a capital da Austrália?` responde.
 
-**Continuidade:** quando todos os modelos do OmniRoute esgotarem e o chat parar, aperte **Ctrl+Alt+Shift+A**. O `agy` abre no projeto, lê `CLAUDE.md`, `ANDAMENTO.md` e o `git status`, e continua o trabalho. Na 1ª vez em cada projeto ele pergunta se você confia na pasta: responda *Yes, I trust this folder*.
+**Continuidade:** quando todos os modelos do OmniRoute esgotarem e o chat parar, aperte **Ctrl+Alt+Shift+A**. O `agy` abre no projeto, lê `CLAUDE.md`, `ANDAMENTO.md` e o `git status`, e continua o trabalho. Antes, o VS Code mostra um menu de modelo (Esc cancela): a 1ª opção, **sugerido no ANDAMENTO.md**, usa o apelido da última linha `**Próxima etapa:** <apelido> — ...` desse arquivo (sem ela, `opus`); as outras são `hydrogen-rapido`, `hydrogen`, `hydrogen-max`, `sonnet` e `opus`. O `agy` fecha cada etapa com essa linha, e a próxima continuação já vem com a sugestão. Na 1ª vez em cada projeto ele pergunta se você confia na pasta: responda *Yes, I trust this folder*.
 
 ---
 

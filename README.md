@@ -7,7 +7,7 @@
 Kit para usar o **Claude Code** no Windows sem ficar parado quando o limite acaba:
 
 - **OmniRoute**: proxy local (`http://localhost:20128`) entre o Claude Code e vários provedores. Inclui:
-  - **fallback automático**: Claude → Codex → gratuitos (NVIDIA NIM, Gemini, OpenRouter) → OpenAI paga;
+  - **fallback automático**: Claude → Codex → gratuitos (NVIDIA NIM, Gemini) → OpenAI paga;
   - **compressão de tokens** (Lite + RTK);
   - pasta de dados protegida, início automático com o Windows e **backup cifrado** (AES-256);
   - **MCP somente leitura**, para o Claude consultar cota e saúde do proxy.
@@ -30,7 +30,7 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
 **Requisitos:**
 - Windows 11 com `winget`;
 - assinatura Claude (Pro/Max);
-- opcionais: assinatura ChatGPT (Codex), contas **gratuitas** NVIDIA NIM e OpenRouter, chave Gemini (AI Studio), OpenAI API e conta Google com **Google AI Pro**.
+- opcionais: assinatura ChatGPT (Codex), conta **gratuita** NVIDIA NIM, chave Gemini (AI Studio), OpenAI API e conta Google com **Google AI Pro**.
 
 1. Baixe o kit:
    ```powershell
@@ -53,10 +53,10 @@ Nada pessoal fica neste repositório. Suas contas, chaves e dados ficam na sua m
 | Situação | O que acontece |
 |---|---|
 | Uso normal | Claude Code → OmniRoute → Claude |
-| Uso normal, poupando o Opus | Modelo `opusplan`: Opus só no modo Plano (`claude-pro-fallback`), Sonnet no resto (`claude-sonnet-fallback`), tarefas de fundo no Haiku e gratuitos (`claude-rapido-fallback`) |
+| Uso normal, poupando o Opus | Modelo `opusplan`: Opus só no modo Plano (`claude-pro-fallback`), Sonnet no resto (`claude-sonnet-fallback`), tarefas de fundo no Haiku 5.5 e gratuitos (`claude-rapido-fallback`) |
 | Limite do Claude acabou | O OmniRoute passa sozinho para os próximos modelos do combo em uso |
 | Pesquisa longa, leitura de muitos arquivos, segunda opinião | O Claude delega ao `agy` (cota do Google), avisa e confere o resultado |
-| Todos os modelos esgotados | **Ctrl+Alt+Shift+A** abre o Antigravity no projeto, que continua pelo `ANDAMENTO.md` |
+| Todos os modelos esgotados | **Ctrl+Alt+Shift+A** abre o Antigravity no projeto, com um menu de modelo (o sugerido no `ANDAMENTO.md` vem primeiro), e ele continua pelo `ANDAMENTO.md` |
 
 Comandos no chat:
 - `/agy:perguntar`: pergunta direta;
@@ -92,6 +92,8 @@ Modelos prontos:
   - senha errada ou arquivo alterado são recusados;
   - o `backup.ps1` **se recusa a enviar** para um repositório público.
 - **MCP:** a trava de escopo bloqueia as ferramentas de escrita.
+- **Comandos `/agy:*`:** o `allowed-tools` de cada um libera só a ponte `agy.ps1` (ou o `status.ps1`) pelo caminho do plugin, e não qualquer comando do PowerShell.
+- **Fable bloqueado:** o `availableModels` do `settings.json` de exemplo esconde o Fable do seletor (caro e sem fallback).
 - **Chave `mcp-leitura`:** sem acesso a modelos e aceita só de `127.0.0.1`.
 - **`.gitignore`:** bloqueia `.env`, `*.sqlite`, `*.enc`, `settings.json`, `config.local.*` e `ANDAMENTO.md`.
 - **O login do Antigravity nunca é usado como API pelo OmniRoute**, o que pode violar os termos do Google: o `agy` é sempre chamado como ele mesmo.

@@ -1,7 +1,7 @@
 ---
 description: Pede ao Antigravity (agy) uma segunda opinião sobre as mudanças atuais ou um arquivo
 argument-hint: "[--modelo hydrogen|hydrogen-max|sonnet|opus] [arquivo ou foco da revisão]"
-allowed-tools: Bash(powershell.exe:*), Bash(git diff:*), Bash(git status:*)
+allowed-tools: 'Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1":*)', Bash(git diff:*), Bash(git status:*)
 ---
 
 Peça ao Antigravity uma revisão. Foco indicado pelo usuário: $ARGUMENTS
@@ -13,7 +13,7 @@ Peça ao Antigravity uma revisão. Foco indicado pelo usuário: $ARGUMENTS
 3. Monte um prompt autossuficiente: objetivo das mudanças (resuma a partir desta conversa), o diff e os **caminhos completos** dos arquivos alterados (o agy lê arquivos pelo caminho, mas não lista pastas nem roda comandos em modo leitura). Peça: erros de lógica, riscos de segurança, casos não tratados e melhorias, **em ordem de gravidade**, cada um com arquivo e linha. Peça para não reescrever o código inteiro.
    Nunca inclua segredos (`.env`, tokens, chaves) no prompt.
    Se o diff passar de ~25 mil caracteres, não cole: liste os caminhos completos dos arquivos (dentro da pasta do projeto; o agy não lê pastas temporárias) e peça para lê-los. No Windows, a linha de comando aceita no máximo ~32 mil caracteres.
-4. Rode pela ferramenta Bash (timeout 600000 ms), em modo leitura:
+4. Rode pela ferramenta Bash (timeout 600000 ms), em modo leitura. Use o comando exatamente neste formato (aspas duplas e barras `/` no caminho da ponte), senão a permissão do comando não vale:
    ```bash
    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_PLUGIN_ROOT}/scripts/agy.ps1" -Modelo <modelo> -Modo leitura -Pasta "<pasta atual>" <<'PROMPT_AGY'
    <prompt da revisão>
